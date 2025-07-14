@@ -1,6 +1,5 @@
 # maven
 target/
-.mvn/
 
 # git
 .git
