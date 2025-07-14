@@ -3,7 +3,7 @@ stages:
   - deploy
 
 variables:
-  DOCKER_IMAGE: registry.gitlab.com/store-builder
+  DOCKER_IMAGE: registry.gitlab.com/armannh/store-builder
 
 build:
   stage: build
