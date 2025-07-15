@@ -1,0 +1,31 @@
+services:
+  database:
+    image: postgres:17
+    container_name: postgres
+    restart: always
+    env_file:
+      - ./database/.env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  application:
+    image: registry.gitlab.com/armannh/store-builder:latest
+    container_name: application
+    restart: always
+    depends_on:
+      - database
+    env_file:
+      - ./application/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
+    driver: bridge
