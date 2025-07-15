@@ -2,7 +2,6 @@ package com.example.demo.application.user.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,9 +45,9 @@ public class UserController {
 		return userSerializer.serializeLoginUserResponse();
 	}
 
-	@PostMapping(path = "/verify")
+	@PostMapping(path = "/auth")
 	@ResponseStatus(HttpStatus.OK)
-	@Operation(summary = "Verify the user")
+	@Operation(summary = "Authenticate the user")
 	ResponseDto<VerifyUserResDto> verifyUser(@Valid @RequestBody VerifyUserReqDto dto) {
 		VerifyUserCommand command = userSerializer.serializeVeirfyUserCommand(dto);
 
@@ -57,11 +56,11 @@ public class UserController {
 		return userSerializer.serializeVerifyUserResponse(token);
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("isAuthenticated()")
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(path = "/")
+	@PostMapping(path = "/verify")
 	@SecurityRequirement(name = "Bearer Authentication")
-	@Operation(summary = "Check user auth status")
+	@Operation(summary = "Verify the users token")
 	ResponseDto<Void> getList() {
 		return ResponseDto.<Void>builder().status(200).message("successful").build();
 	}

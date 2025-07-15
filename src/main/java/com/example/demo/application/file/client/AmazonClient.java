@@ -20,7 +20,7 @@ public class AmazonClient implements StorageClient {
 		this.fileConfig = fileConfig;
 	}
 
-	public String generateUploadURL(String key) {
+	public String generateUploadLink(String key) {
 		String bucket = fileConfig.getBucketName();
 		Duration expiry = fileConfig.getBucketExpiry();
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.application.file.client.AmazonClient;
 import com.example.demo.application.file.client.StorageClient;
-import com.example.demo.application.file.view.UploadFileView;
+import com.example.demo.application.file.model.UploadFileModel;
 
 @Service
 public class FileService {
@@ -16,11 +16,11 @@ public class FileService {
 		this.storageClient = amazonClient;
 	}
 
-	public UploadFileView generateUploadURL() {
+	public UploadFileModel generateUploadLink() {
 		String key = UUID.randomUUID().toString();
 
-		String url = storageClient.generateUploadURL(key);
+		String url = storageClient.generateUploadLink(key);
 
-		return UploadFileView.builder().key(key).url(url).build();
+		return UploadFileModel.builder().key(key).url(url).build();
 	}
 }
