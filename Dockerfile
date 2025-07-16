@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./mvnw -Pnative spring-boot:build-image -DskipTests
+RUN ./mvnw -Pnative native:compile -DskipTests
 
 # run stage
 FROM alpine:3.22.1 AS runner
