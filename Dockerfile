@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./mvnw -Pnative native:compile -DskipTests
+RUN ./mvnw -Pnative native:build -DskipTests
 
 # run stage
 FROM alpine:3.22.1 AS runner
