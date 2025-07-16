@@ -2,19 +2,14 @@ stages:
   - build
 
 variables:
-  # DOCKER_DRIVER: overlay2
   DOCKER_IMAGE: registry.gitlab.com/armannh/store-builder
 
 build:
   stage: build
-  image: eclipse-temurin:24-jdk-alpine
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
+  image: docker:latest
   services:
     - docker:dind
   script:
-    - docker image ls
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker build -t $DOCKER_IMAGE .
-    - docker image ls
     - docker push $DOCKER_IMAGE

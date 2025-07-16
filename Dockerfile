@@ -1,7 +1,9 @@
 # build stage
-FROM eclipse-temurin:24-jdk-alpine AS builder
+FROM ghcr.io/graalvm/graalvm-ce:latest AS builder
 
 WORKDIR /app
+
+RUN gu install native-image
 
 COPY . .
 
