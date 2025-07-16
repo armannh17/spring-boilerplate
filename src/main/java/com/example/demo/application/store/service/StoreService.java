@@ -17,7 +17,7 @@ public class StoreService {
 
 	public String makeStore(MakeStoreCommand command) {
 		// find an existing store and throw if it exists
-		storeRepository.findBySlug(command.getSlug()).ifPresent((user) -> {
+		storeRepository.findBySlug(command.getSlug()).ifPresent((_) -> {
 			throw new StoreAlreadyExistsException();
 		});
 

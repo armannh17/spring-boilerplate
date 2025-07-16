@@ -1,23 +1,19 @@
 # build stage
-FROM ghcr.io/graalvm/graalvm-ce:22.3.1 AS builder
+FROM eclipse-temurin:24-jdk-alpine as builder
 
 WORKDIR /app
-
-RUN gu install native-image
 
 COPY . .
 
-RUN ./mvnw -Pnative native:compile -DskipTests
+RUN ./mvnw dependency:go-offline
+
+RUN ./mvnw package -DskipTests
 
 # run stage
-FROM alpine:3.22.1 AS runner
+FROM eclipse-temurin:24-jre-alpine as runner
 
 WORKDIR /app
 
-COPY --from=builder /app/target/app .
+COPY --from=builder /app/target/app.jar app.jar
 
-RUN chmod +x app
-
-EXPOSE 3000
-
-ENTRYPOINT ["./app"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
