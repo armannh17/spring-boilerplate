@@ -5,21 +5,17 @@ WORKDIR /app
 
 COPY . .
 
-# RUN ./mvnw dependency:go-offline
+RUN ./mvnw dependency:go-offline
 
-RUN ./mvnw spring-boot:build-image -DskipTests -Pnative
+RUN ./mvnw -Pnative native:compile
 
 # run stage
-FROM alpine:3.22.1 as runner
+FROM eclipse-temurin:24-jre-alpine as runner
 
 WORKDIR /app
 
-# COPY --from=builder /app/target/app.jar app.jar
+COPY --from=builder /app/target/app .
 
-# ENTRYPOINT ["java", "-jar", "app.jar"]
+RUN chmod +x app
 
-COPY --from=builder /app/target/native/native-app .
-
-RUN chmod +x native-app
-
-ENTRYPOINT ["./native-app"]
+ENTRYPOINT ["./app"]
