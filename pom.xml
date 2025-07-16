@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>24</java.version>
+		<native.maven.plugin.version>0.9.23</native.maven.plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>

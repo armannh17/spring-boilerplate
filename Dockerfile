@@ -1,21 +1,34 @@
-# build stage
-FROM eclipse-temurin:24-jdk-alpine as builder
+################################################################################
+# BUILDER — compile to a GraalVM native executable
+################################################################################
+FROM ghcr.io/graalvm/graalvm-ce:24.0.0-java24-alpine AS builder
+WORKDIR /workspace
 
+# copy sources & Maven wrapper
+COPY pom.xml mvnw ./
+COPY .mvn .mvn
+
+# go offline (speed up rebuilds)
+RUN ./mvnw -B dependency:go-offline
+
+# copy application code
+COPY src src
+
+# package as native executable
+RUN ./mvnw -B -Pnative clean package -DskipTests
+
+################################################################################
+# RUNTIME — tiny image with only your native binary
+################################################################################
+FROM alpine:3.18 AS runner
 WORKDIR /app
 
-COPY . .
+# copy the native app from builder
+COPY --from=builder /workspace/target/app .
 
-RUN ./mvnw dependency:go-offline
-
-RUN ./mvnw -Pnative native:compile
-
-# run stage
-FROM eclipse-temurin:24-jre-alpine as runner
-
-WORKDIR /app
-
-COPY --from=builder /app/target/app .
-
+# make sure it’s executable
 RUN chmod +x app
 
+# expose and run
+EXPOSE 3000
 ENTRYPOINT ["./app"]
