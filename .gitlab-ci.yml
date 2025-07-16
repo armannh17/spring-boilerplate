@@ -6,7 +6,7 @@ variables:
 
 build:
   stage: build
-  image: docker:latest
+  image: eclipse-temurin:24-jdk-alpine
   services:
     - docker:dind
   script:
