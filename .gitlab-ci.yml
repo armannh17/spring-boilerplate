@@ -10,6 +10,7 @@ build:
   services:
     - docker:dind
   script:
+    - ./mvnw -Pnative spring-boot:build-image -DskipTests
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker build -t $DOCKER_IMAGE .
     - docker push $DOCKER_IMAGE
