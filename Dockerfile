@@ -1,5 +1,5 @@
 # build stage
-FROM springci/graalvm-ce:java17-0.12.x AS builder
+FROM ghcr.io/graalvm/graalvm-ce:22.3.1  AS builder
 
 WORKDIR /app
 
