@@ -1,5 +1,5 @@
 # build stage
-FROM ghcr.io/graalvm/graalvm-ce:latest AS builder
+FROM eclipse-temurin:24-jdk-alpine AS builder
 
 WORKDIR /app
 
