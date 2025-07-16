@@ -1,5 +1,5 @@
 # build stage
-FROM paketobuildpacks/graalvm:9.1.4 AS builder
+FROM eclipse-temurin:24-jdk-alpine AS builder
 
 WORKDIR /app
 
