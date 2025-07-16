@@ -7,9 +7,7 @@ variables:
 
 build:
   stage: build
-  image: docker:latest
-  services:
-    - docker:24.0.2-dind
+  image: eclipse-temurin:24-jdk-alpine
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
   services:
