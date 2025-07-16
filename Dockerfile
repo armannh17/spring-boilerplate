@@ -3,6 +3,8 @@ FROM ghcr.io/graalvm/graalvm-ce:22.3.1 AS builder
 
 WORKDIR /app
 
+RUN gu install native-image
+
 COPY . .
 
 RUN ./mvnw -Pnative native:compile -DskipTests
