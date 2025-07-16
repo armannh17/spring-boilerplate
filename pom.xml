@@ -28,7 +28,6 @@
 	</scm>
 	<properties>
 		<java.version>24</java.version>
-		<native.maven.plugin.version>0.9.23</native.maven.plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -106,15 +105,6 @@
   			<artifactId>mapstruct-processor</artifactId>
   			<version>1.6.3</version>
   			<scope>provided</scope>
-		</dependency>
-		<dependency>
-  			<groupId>org.flywaydb</groupId>
-  			<artifactId>flyway-core</artifactId>
-  			<version>11.10.2</version>
-		</dependency>
-		<dependency>
-    		<groupId>org.flywaydb</groupId>
-    		<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
 		<dependency>
             <groupId>io.awspring.cloud</groupId>
