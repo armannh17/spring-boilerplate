@@ -1,7 +1,8 @@
 ################################################################################
 # BUILDER — compile to a GraalVM native executable
 ################################################################################
-FROM ghcr.io/graalvm/graalvm-ce:24.0.0-java24-alpine AS builder
+FROM eclipse-temurin:24-jdk-alpine AS builder
+
 WORKDIR /workspace
 
 # copy sources & Maven wrapper
