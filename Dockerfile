@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./mvnw dependency:go-offline
+# RUN ./mvnw dependency:go-offline
 
 RUN ./mvnw spring-boot:build-image -DskipTests -Pnative
 
