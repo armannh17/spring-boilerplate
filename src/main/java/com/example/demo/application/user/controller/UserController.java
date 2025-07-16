@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.application.user.command.AuthenticateUserCommand;
 import com.example.demo.application.user.command.LoginUserCommand;
-import com.example.demo.application.user.command.VerifyUserCommand;
+import com.example.demo.application.user.dto.AuthenticateUserReqDto;
+import com.example.demo.application.user.dto.AuthenticateUserResDto;
 import com.example.demo.application.user.dto.LoginUserReqDto;
-import com.example.demo.application.user.dto.VerifyUserReqDto;
-import com.example.demo.application.user.dto.VerifyUserResDto;
 import com.example.demo.application.user.serializer.UserSerializer;
 import com.example.demo.application.user.service.UserService;
 import com.example.demo.platform.shared.dto.ResponseDto;
@@ -48,12 +48,12 @@ public class UserController {
 	@PostMapping(path = "/auth")
 	@ResponseStatus(HttpStatus.OK)
 	@Operation(summary = "Authenticate the user")
-	ResponseDto<VerifyUserResDto> verifyUser(@Valid @RequestBody VerifyUserReqDto dto) {
-		VerifyUserCommand command = userSerializer.serializeVeirfyUserCommand(dto);
+	ResponseDto<AuthenticateUserResDto> authenticateUser(@Valid @RequestBody AuthenticateUserReqDto dto) {
+		AuthenticateUserCommand command = userSerializer.serializeAuthenticateUserCommand(dto);
 
-		String token = userService.verifyUser(command);
+		String token = userService.authenticateUser(command);
 
-		return userSerializer.serializeVerifyUserResponse(token);
+		return userSerializer.serializeAuthenticateUserResponse(token);
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -61,7 +61,7 @@ public class UserController {
 	@PostMapping(path = "/verify")
 	@SecurityRequirement(name = "Bearer Authentication")
 	@Operation(summary = "Verify the users token")
-	ResponseDto<Void> getList() {
-		return ResponseDto.<Void>builder().status(200).message("successful").build();
+	ResponseDto<Void> verifyAuthentication() {
+		return userSerializer.serializeVerifyAuthenticationResponse();
 	}
 }

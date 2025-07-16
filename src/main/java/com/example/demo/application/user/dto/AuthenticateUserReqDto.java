@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class VerifyUserReqDto {
+public class AuthenticateUserReqDto {
 	@Schema(description = "phone number", example = "0912...", required = true)
 	@NotEmpty
 	@PhoneValidation

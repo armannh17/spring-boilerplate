@@ -26,6 +26,18 @@ public class StoreEntity extends BaseEntity {
 	@Column(name = "slug", nullable = false, updatable = false, length = 200, unique = true)
 	private String slug;
 
+	@Column(name = "image", nullable = false, updatable = false, length = 200)
+	private String image;
+
+	@Column(name = "color_primary", nullable = false, updatable = false, length = 100)
+	private String colorPrimary;
+
+	@Column(name = "color_accent", nullable = false, updatable = false, length = 100)
+	private String colorAccent;
+
+	@Column(name = "color_neutral", nullable = false, updatable = false, length = 100)
+	private String colorNeutral;
+
 	@Column(name = "verified", nullable = false, updatable = true)
 	private Boolean verified;
 }

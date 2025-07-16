@@ -1,0 +1,37 @@
+package com.example.demo.application.store.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.application.store.command.MakeStoreCommand;
+import com.example.demo.application.store.exception.StoreAlreadyExistsException;
+import com.example.demo.application.store.model.StoreModel;
+import com.example.demo.application.store.repository.StoreRepository;
+
+@Service
+public class StoreService {
+	private final StoreRepository storeRepository;
+
+	public StoreService(StoreRepository storeRepository) {
+		this.storeRepository = storeRepository;
+	}
+
+	public String makeStore(MakeStoreCommand command) {
+		// find an existing store and throw if it exists
+		storeRepository.findBySlug(command.getSlug()).ifPresent((_) -> {
+			throw new StoreAlreadyExistsException();
+		});
+
+		// make a new store
+		StoreModel store = StoreModel.builder().name(command.getName()).slug(command.getSlug())
+				.image(command.getImage()).verified(false).build();
+
+		// make colors based on the passed primary color
+		store.PopulateColors(command.getColor());
+
+		// save the new store
+		storeRepository.save(store);
+
+		// return the new stores id
+		return store.getId().toString();
+	}
+}

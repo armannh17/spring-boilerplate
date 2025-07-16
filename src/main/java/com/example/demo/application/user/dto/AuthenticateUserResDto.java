@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class VerifyUserResDto {
+public class AuthenticateUserResDto {
 	private String token;
 }

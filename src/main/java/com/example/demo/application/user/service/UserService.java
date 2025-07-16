@@ -3,8 +3,8 @@ package com.example.demo.application.user.service;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.application.user.command.AuthenticateUserCommand;
 import com.example.demo.application.user.command.LoginUserCommand;
-import com.example.demo.application.user.command.VerifyUserCommand;
 import com.example.demo.application.user.config.UserConfig;
 import com.example.demo.application.user.event.LoginAttemptedEvent;
 import com.example.demo.application.user.exception.InvalidCredentialException;
@@ -51,7 +51,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public String verifyUser(VerifyUserCommand command) {
+	public String authenticateUser(AuthenticateUserCommand command) {
 		// find the user with the given phone
 		UserModel user = userRepository.findByPhone(command.getPhone()).orElseThrow(InvalidCredentialException::new);
 
