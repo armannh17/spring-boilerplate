@@ -125,6 +125,11 @@
 				<groupId>org.graalvm.buildtools</groupId>
 				<artifactId>native-maven-plugin</artifactId>
 				<version>0.10.6</version>
+				<configuration>
+       				<buildArgs>
+          				<buildArg>-H:+AllowIncompleteClasspath</buildArg>
+        			</buildArgs>
+      			</configuration>
 			</plugin>
 			<plugin>
       			<groupId>org.apache.maven.plugins</groupId>
