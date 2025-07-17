@@ -26,6 +26,12 @@ public class StoreEntity extends BaseEntity {
 	@Column(name = "slug", nullable = false, updatable = false, length = 200, unique = true)
 	private String slug;
 
+	@Column(name = "brief", nullable = false, updatable = false, length = 200)
+	private String brief;
+
+	@Column(name = "description", nullable = false, updatable = false, length = 200)
+	private String description;
+
 	@Column(name = "image", nullable = false, updatable = false, length = 200)
 	private String image;
 
@@ -37,6 +43,9 @@ public class StoreEntity extends BaseEntity {
 
 	@Column(name = "color_neutral", nullable = false, updatable = false, length = 100)
 	private String colorNeutral;
+
+	@Column(name = "color_dark", nullable = false, updatable = false, length = 100)
+	private String colorDark;
 
 	@Column(name = "verified", nullable = false, updatable = true)
 	private Boolean verified;

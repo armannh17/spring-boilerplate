@@ -8,6 +8,8 @@ import lombok.Getter;
 public class MakeStoreCommand {
 	private String name;
 	private String slug;
+	private String brief;
+	private String description;
 	private String image;
 	private String color;
 }

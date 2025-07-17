@@ -14,9 +14,9 @@ import jakarta.validation.constraints.Pattern;
 @Constraint(validatedBy = {})
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-@Pattern(regexp = "^09\\d{9}$")
-public @interface PhoneValidator {
-	String message() default "phone is not valid";
+@Pattern(regexp = "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
+public @interface ColorValidator {
+	String message() default "color is not valid";
 
 	Class<?>[] groups() default {};
 

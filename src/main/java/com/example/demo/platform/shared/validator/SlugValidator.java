@@ -1,4 +1,4 @@
-package com.example.demo.platform.shared.validation;
+package com.example.demo.platform.shared.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,17 +6,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.example.demo.platform.shared.validator.OtpValidator;
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import jakarta.validation.constraints.Pattern;
 
 @Documented
-@Constraint(validatedBy = OtpValidator.class)
+@Constraint(validatedBy = {})
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OtpValidation {
-	String message() default "otp is not valid";
+@Pattern(regexp = "^[a-z0-9]+(-[a-z0-9]+)*$")
+public @interface SlugValidator {
+	String message() default "slug is not valid";
 
 	Class<?>[] groups() default {};
 

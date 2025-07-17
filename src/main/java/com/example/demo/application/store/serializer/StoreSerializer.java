@@ -12,7 +12,7 @@ import com.example.demo.platform.shared.dto.ResponseDto;
 public class StoreSerializer {
 	public MakeStoreCommand serializeMakeStoreCommand(MakeStoreReqDto dto) {
 		return MakeStoreCommand.builder().name(dto.getName()).slug(dto.getSlug()).image(dto.getImage())
-				.color(dto.getColor()).build();
+				.brief(dto.getBrief()).description(dto.getDescription()).color(dto.getColor()).build();
 	}
 
 	public ResponseDto<MakeStoreResDto> serializeMakeStoreResponse(String id) {

@@ -1,4 +1,4 @@
-package com.example.demo.platform.shared.validation;
+package com.example.demo.platform.shared.validator;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,19 +6,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.example.demo.platform.shared.validator.PhoneValidator;
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import jakarta.validation.constraints.Pattern;
 
 @Documented
-@Constraint(validatedBy = PhoneValidator.class)
+@Constraint(validatedBy = {})
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PhoneValidation {
-	String message() default "phone is not valid";
+@Pattern(regexp = "^[a-zA-Z0-9 .,?!:;'\"-]*$")
+public @interface TextValidator {
+    String message() default "text is not valid";
 
-	Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 }
