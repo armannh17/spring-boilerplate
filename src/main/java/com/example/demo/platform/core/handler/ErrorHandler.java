@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
+import com.example.demo.application.store.exception.StoreNotFoundException;
 import com.example.demo.application.user.exception.InvalidCredentialException;
 import com.example.demo.platform.shared.dto.ResponseDto;
 
@@ -54,6 +55,15 @@ public class ErrorHandler {
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	public ResponseDto<Void> handleGreyScaleColorAreNotAllowedError(Exception e) {
 		ResponseDto<Void> response = ResponseDto.<Void>builder().status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+				.message(e.getMessage()).build();
+
+		return response;
+	}
+
+	@ExceptionHandler(StoreNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseDto<Void> handleStoreNotFoundError(Exception e) {
+		ResponseDto<Void> response = ResponseDto.<Void>builder().status(HttpStatus.NOT_FOUND.value())
 				.message(e.getMessage()).build();
 
 		return response;

@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.application.store.command.MakeStoreCommand;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
+import com.example.demo.application.store.exception.StoreNotFoundException;
 import com.example.demo.application.store.model.StoreModel;
+import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.application.store.repository.StoreRepository;
 
 @Service
@@ -34,5 +36,10 @@ public class StoreService {
 
 		// return the new stores id
 		return store.getId().toString();
+	}
+
+	public StoreModel getStore(GetStoreQuery query) {
+		// find an existing store and throw if it does not exist
+		return storeRepository.findBySlug(query.getSlug()).orElseThrow(StoreNotFoundException::new);
 	}
 }
