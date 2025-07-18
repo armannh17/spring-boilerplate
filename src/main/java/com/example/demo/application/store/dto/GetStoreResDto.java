@@ -1,5 +1,9 @@
 package com.example.demo.application.store.dto;
 
+import com.example.demo.application.store.constant.Alignment;
+import com.example.demo.application.store.constant.Detail;
+import com.example.demo.application.store.constant.Radius;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,4 +21,7 @@ public class GetStoreResDto {
 	private String colorNeutral;
 	private String colorDark;
 	private Boolean verified;
+	private Radius radius;
+	private Detail detail;
+	private Alignment alignment;
 }

@@ -1,5 +1,8 @@
 package com.example.demo.application.store.model;
 
+import com.example.demo.application.store.constant.Alignment;
+import com.example.demo.application.store.constant.Detail;
+import com.example.demo.application.store.constant.Radius;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.platform.shared.model.BaseModel;
 import com.example.demo.platform.shared.object.ColorObject;
@@ -20,6 +23,9 @@ public class StoreModel extends BaseModel {
 	private String colorNeutral;
 	private String colorDark;
 	private Boolean verified;
+	private Radius raduis;
+	private Detail detail;
+	private Alignment alignment;
 
 	public void populateColorPalette(String hex) {
 		ColorObject baseColor = new ColorObject(hex);

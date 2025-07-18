@@ -1,5 +1,9 @@
 package com.example.demo.application.store.command;
 
+import com.example.demo.application.store.constant.Alignment;
+import com.example.demo.application.store.constant.Detail;
+import com.example.demo.application.store.constant.Radius;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,4 +16,7 @@ public class MakeStoreCommand {
 	private String description;
 	private String image;
 	private String color;
+	private Radius raduis;
+	private Detail detail;
+	private Alignment alignment;
 }

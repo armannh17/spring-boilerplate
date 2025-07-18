@@ -8,6 +8,7 @@ import com.example.demo.application.user.command.LoginUserCommand;
 import com.example.demo.application.user.dto.AuthenticateUserReqDto;
 import com.example.demo.application.user.dto.AuthenticateUserResDto;
 import com.example.demo.application.user.dto.LoginUserReqDto;
+import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 
 @Component
@@ -18,7 +19,7 @@ public class UserSerializer {
 	}
 
 	public ResponseDto<Void> serializeLoginUserResponse() {
-		return ResponseDto.<Void>builder().status(HttpStatus.OK.value()).message("successful").build();
+		return ResponseDto.<Void>builder().code(ErrorCode.NO_ERROR.getCode()).status(HttpStatus.OK.value()).message("successful").build();
 	}
 
 	public AuthenticateUserCommand serializeAuthenticateUserCommand(AuthenticateUserReqDto dto) {
@@ -26,11 +27,11 @@ public class UserSerializer {
 	}
 
 	public ResponseDto<AuthenticateUserResDto> serializeAuthenticateUserResponse(String token) {
-		return ResponseDto.<AuthenticateUserResDto>builder().status(HttpStatus.OK.value()).message("successful")
+		return ResponseDto.<AuthenticateUserResDto>builder().code(ErrorCode.NO_ERROR.getCode()).status(HttpStatus.OK.value()).message("successful")
 				.data(AuthenticateUserResDto.builder().token(token).build()).build();
 	}
 
 	public ResponseDto<Void> serializeVerifyAuthenticationResponse() {
-		return ResponseDto.<Void>builder().status(HttpStatus.OK.value()).message("successful").build();
+		return ResponseDto.<Void>builder().code(ErrorCode.NO_ERROR.getCode()).status(HttpStatus.OK.value()).message("successful").build();
 	}
 }

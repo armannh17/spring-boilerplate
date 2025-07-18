@@ -1,7 +1,12 @@
 package com.example.demo.application.store.entity;
 
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.example.demo.application.store.constant.Alignment;
+import com.example.demo.application.store.constant.Detail;
+import com.example.demo.application.store.constant.Radius;
 import com.example.demo.platform.shared.entity.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -49,4 +54,16 @@ public class StoreEntity extends BaseEntity {
 
 	@Column(name = "verified", nullable = false, updatable = true)
 	private Boolean verified;
+
+	@Column(name = "radius", nullable = false, updatable = false, length = 100)
+	@JdbcType(PostgreSQLEnumJdbcType.class)
+	private Radius raduis;
+
+	@Column(name = "detail", nullable = false, updatable = false, length = 100)
+	@JdbcType(PostgreSQLEnumJdbcType.class)
+	private Detail detail;
+
+	@Column(name = "alignment", nullable = false, updatable = false, length = 100)
+	@JdbcType(PostgreSQLEnumJdbcType.class)
+	private Alignment alignment;
 }

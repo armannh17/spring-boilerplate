@@ -26,7 +26,8 @@ public class StoreService {
 		// make a new store
 		StoreModel store = StoreModel.builder().name(command.getName()).slug(command.getSlug())
 				.brief(command.getBrief()).description(command.getDescription()).image(command.getImage())
-				.verified(false).build();
+				.verified(false).raduis(command.getRaduis()).detail(command.getDetail())
+				.alignment(command.getAlignment()).build();
 
 		// make colors based on the passed primary color
 		store.populateColorPalette(command.getColor());

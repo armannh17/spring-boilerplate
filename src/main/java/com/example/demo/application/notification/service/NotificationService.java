@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.application.notification.client.KaveNegarClient;
 import com.example.demo.application.notification.client.NotificationClient;
+import com.example.demo.application.notification.constant.NotificationType;
 import com.example.demo.application.notification.exception.NotificationTemplateMissingException;
 import com.example.demo.application.notification.model.NotificationModel;
 import com.example.demo.application.notification.repository.NotificationRepository;
-import com.example.demo.application.notification.type.NotificationType;
 
 @Service
 public class NotificationService {

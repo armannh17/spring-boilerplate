@@ -10,18 +10,21 @@ import com.example.demo.application.store.dto.MakeStoreReqDto;
 import com.example.demo.application.store.dto.MakeStoreResDto;
 import com.example.demo.application.store.model.StoreModel;
 import com.example.demo.application.store.query.GetStoreQuery;
+import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 
 @Component
 public class StoreSerializer {
 	public MakeStoreCommand serializeMakeStoreCommand(MakeStoreReqDto dto) {
 		return MakeStoreCommand.builder().name(dto.getName()).slug(dto.getSlug()).image(dto.getImage())
-				.brief(dto.getBrief()).description(dto.getDescription()).color(dto.getColor()).build();
+				.brief(dto.getBrief()).description(dto.getDescription()).color(dto.getColor()).raduis(dto.getRadius())
+				.detail(dto.getDetail()).alignment(dto.getAlignment()).build();
 	}
 
 	public ResponseDto<MakeStoreResDto> serializeMakeStoreResponse(String id) {
-		return ResponseDto.<MakeStoreResDto>builder().status(HttpStatus.CREATED.value()).message("successful")
-				.data(MakeStoreResDto.builder().id(id).build()).build();
+		return ResponseDto.<MakeStoreResDto>builder().code(ErrorCode.NO_ERROR.getCode())
+				.status(HttpStatus.CREATED.value()).message("successful").data(MakeStoreResDto.builder().id(id).build())
+				.build();
 	}
 
 	public GetStoreQuery serializeGetStoreQuery(GetStoreReqDto dto) {
@@ -29,12 +32,14 @@ public class StoreSerializer {
 	}
 
 	public ResponseDto<GetStoreResDto> serializeGetStoreResponse(StoreModel store) {
-		return ResponseDto.<GetStoreResDto>builder().status(HttpStatus.OK.value()).message("successful")
+		return ResponseDto.<GetStoreResDto>builder().code(ErrorCode.NO_ERROR.getCode()).status(HttpStatus.OK.value())
+				.message("successful")
 				.data(GetStoreResDto.builder().id(store.getId().toString()).name(store.getName()).slug(store.getSlug())
 						.brief(store.getBrief()).description(store.getDescription()).image(store.getImage())
 						.colorPrimary(store.getColorPrimary()).colorAccent(store.getColorAccent())
 						.colorNeutral(store.getColorNeutral()).colorDark(store.getColorDark())
-						.verified(store.getVerified()).build())
+						.verified(store.getVerified()).radius(store.getRaduis()).detail(store.getDetail())
+						.alignment(store.getAlignment()).build())
 				.build();
 	}
 }

@@ -1,3 +1,9 @@
+CREATE TYPE radius AS ENUM ('SMALL', 'MEDIUM', 'LARGE');
+
+CREATE TYPE detail AS ENUM ('LOW', 'MEDIUM', 'HIGH');
+
+CREATE TYPE alignment AS ENUM ('LEFT', 'CENTER', 'RIGHT');
+
 CREATE TABLE store (
     id UUID PRIMARY KEY,
     name VARCHAR(200) NOT NULL,
@@ -10,6 +16,9 @@ CREATE TABLE store (
     color_neutral VARCHAR(100) NOT NULL,
     color_dark VARCHAR(100) NOT NULL,
     verified BOOLEAN NOT NULL,
+    radius radius NOT NULL,
+    detail detail NOT NULL,
+    alignment alignment NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

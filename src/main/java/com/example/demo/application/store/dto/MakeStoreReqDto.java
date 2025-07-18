@@ -3,12 +3,16 @@ package com.example.demo.application.store.dto;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UUID;
 
+import com.example.demo.application.store.constant.Alignment;
+import com.example.demo.application.store.constant.Detail;
+import com.example.demo.application.store.constant.Radius;
 import com.example.demo.platform.shared.validator.ColorValidator;
 import com.example.demo.platform.shared.validator.SlugValidator;
 import com.example.demo.platform.shared.validator.TextValidator;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -49,4 +53,16 @@ public class MakeStoreReqDto {
 	@Length(min = 1, max = 100)
 	@ColorValidator
 	private String color;
+
+	@Schema(description = "amount of raduis applied to elements", example = "SMALL", required = true)
+	@NotNull
+	private Radius radius;
+
+	@Schema(description = "level of detail on components", example = "LOW", required = true)
+	@NotNull
+	private Detail detail;
+
+	@Schema(description = "the alignment of the elements", example = "LEFT", required = true)
+	@NotNull
+	private Alignment alignment;
 }
