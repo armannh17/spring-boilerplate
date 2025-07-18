@@ -9,7 +9,6 @@ target/
 
 # os
 .env
-.DS_Store
 Thumbs.db
 
 # editor
