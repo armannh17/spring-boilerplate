@@ -1,7 +1,10 @@
+CREATE TYPE role AS ENUM ('USER', 'ADMIN');
+
 CREATE TABLE "user" (
   id             UUID PRIMARY KEY,
   phone          VARCHAR(200) NOT NULL UNIQUE,
   locked         BOOLEAN NOT NULL,
+  role           role NOT NULL,
   credential_id  UUID NOT NULL UNIQUE,
   created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at     TIMESTAMPTZ NOT NULL DEFAULT now(),

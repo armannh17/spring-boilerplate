@@ -1,6 +1,6 @@
 package com.example.demo.application.user.model;
 
-import com.example.demo.application.user.type.Role;
+import com.example.demo.application.user.constant.Role;
 import com.example.demo.platform.shared.model.BaseModel;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;

@@ -1,6 +1,6 @@
 package com.example.demo.application.user.entity;
 
-import com.example.demo.application.user.type.Role;
+import com.example.demo.application.user.constant.Role;
 import com.example.demo.platform.shared.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
