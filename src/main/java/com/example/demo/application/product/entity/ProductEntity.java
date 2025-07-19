@@ -1,4 +1,4 @@
-package com.example.demo.application.catalog.entity;
+package com.example.demo.application.product.entity;
 
 import com.example.demo.platform.shared.entity.BaseEntity;
 import jakarta.persistence.Column;

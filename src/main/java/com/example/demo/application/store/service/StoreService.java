@@ -8,6 +8,7 @@ import com.example.demo.application.store.model.StoreModel;
 import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.application.store.repository.StoreRepository;
 import jakarta.transaction.Transactional;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -61,10 +62,7 @@ public class StoreService {
   @Transactional
   public void updateStore(UpdateStoreCommand command) {
     // find an existing store and throw if it does not exists
-    StoreModel store =
-        storeRepository
-            .findByIdAndUser(command.getId(), command.getUserId())
-            .orElseThrow(StoreNotFoundException::new);
+    StoreModel store = checkStore(command.getId(), command.getUserId());
 
     // update the store
     store.update(
@@ -81,5 +79,9 @@ public class StoreService {
 
     // save the updated store
     storeRepository.save(store);
+  }
+
+  public StoreModel checkStore(UUID id, UUID userId) {
+    return storeRepository.findByIdAndUser(id, userId).orElseThrow(StoreNotFoundException::new);
   }
 }

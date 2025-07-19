@@ -9,6 +9,5 @@ CREATE TABLE "user" (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
 
-  CONSTRAINT fk_user_credential FOREIGN KEY (credential_id)
-    REFERENCES credential(id) ON DELETE RESTRICT
+  CONSTRAINT fk_user_credential FOREIGN KEY (credential_id) REFERENCES credential(id) ON DELETE RESTRICT
 );
