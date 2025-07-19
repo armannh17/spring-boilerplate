@@ -1,10 +1,11 @@
 package com.example.demo.platform.core.handler;
 
-import com.example.demo.application.store.exception.CantUpdateVerfiedStoreException;
+import com.example.demo.application.store.exception.CantUpdateVerifiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
 import com.example.demo.application.store.exception.StoreNotFoundException;
 import com.example.demo.application.user.exception.InvalidCredentialException;
+import com.example.demo.application.user.exception.OtpIsNotExpiredException;
 import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
@@ -94,13 +95,26 @@ public class ErrorHandler {
     return response;
   }
 
-  @ExceptionHandler(CantUpdateVerfiedStoreException.class)
+  @ExceptionHandler(CantUpdateVerifiedStoreException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-  public ResponseDto<Void> handleCantUpdateVerfiedStoreError(Exception e) {
+  public ResponseDto<Void> handleCantUpdateVerifiedStoreError(Exception e) {
     ResponseDto<Void> response =
         ResponseDto.<Void>builder()
-            .code(ErrorCode.UNPROCESSABLE_ENTITY.getCode())
-            .status(HttpStatus.NOT_FOUND.value())
+            .code(ErrorCode.CANT_UPDATE_VERIFIED_STORE.getCode())
+            .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(OtpIsNotExpiredException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ResponseDto<Void> handleOtpIsNotExpiredError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.OTP_IS_NOT_EXPIRED.getCode())
+            .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
             .message(e.getMessage())
             .build();
 

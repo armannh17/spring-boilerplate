@@ -3,7 +3,7 @@ package com.example.demo.application.store.model;
 import com.example.demo.application.store.constant.Alignment;
 import com.example.demo.application.store.constant.Detail;
 import com.example.demo.application.store.constant.Radius;
-import com.example.demo.application.store.exception.CantUpdateVerfiedStoreException;
+import com.example.demo.application.store.exception.CantUpdateVerifiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.platform.shared.model.BaseModel;
 import com.example.demo.platform.shared.object.ColorObject;
@@ -51,7 +51,7 @@ public class StoreModel extends BaseModel {
       Detail detail,
       Alignment alignment) {
     if (verified) {
-      throw new CantUpdateVerfiedStoreException();
+      throw new CantUpdateVerifiedStoreException();
     }
 
     this.name = name;

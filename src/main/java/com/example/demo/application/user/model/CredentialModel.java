@@ -1,6 +1,7 @@
 package com.example.demo.application.user.model;
 
 import com.example.demo.application.user.exception.InvalidCredentialException;
+import com.example.demo.application.user.exception.OtpIsNotExpiredException;
 import com.example.demo.platform.shared.model.BaseModel;
 import java.util.Date;
 import lombok.Getter;
@@ -13,6 +14,13 @@ public class CredentialModel extends BaseModel {
   private Date otpExpiry;
 
   public void requestOtp(Integer length, Long expiry) {
+    // check for existing otp
+    Date currentTimestamp = new Date();
+
+    if (otpCode != null && otpExpiry.after(currentTimestamp)) {
+      throw new OtpIsNotExpiredException();
+    }
+
     // generate a random number for otp
     int min = (int) Math.pow(10, length - 1);
     int max = (int) Math.pow(10, length) - 1;
