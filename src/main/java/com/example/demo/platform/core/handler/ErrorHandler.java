@@ -1,6 +1,7 @@
 package com.example.demo.platform.core.handler;
 
 import com.example.demo.application.product.exception.CategoryNotFoundException;
+import com.example.demo.application.product.exception.FieldNotFoundException;
 import com.example.demo.application.store.exception.CantUpdateVerifiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
@@ -124,10 +125,23 @@ public class ErrorHandler {
 
   @ExceptionHandler(CategoryNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  public ResponseDto<Void> handleCategoryNotFoundExceptionError(Exception e) {
+  public ResponseDto<Void> handleCategoryNotFoundError(Exception e) {
     ResponseDto<Void> response =
         ResponseDto.<Void>builder()
             .code(ErrorCode.CATEGORY_NOT_FOUND.getCode())
+            .status(HttpStatus.NOT_FOUND.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(FieldNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseDto<Void> handleFieldNotFoundError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.FIELD_NOT_FOUND.getCode())
             .status(HttpStatus.NOT_FOUND.value())
             .message(e.getMessage())
             .build();

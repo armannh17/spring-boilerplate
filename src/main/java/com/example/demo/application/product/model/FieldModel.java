@@ -8,4 +8,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class FieldModel extends BaseModel {
   private String name;
+
+  public void update(String name) {
+    this.name = name;
+  }
 }

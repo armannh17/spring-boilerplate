@@ -27,7 +27,8 @@ public enum ErrorCode {
   CANT_UPDATE_VERIFIED_STORE(3004),
 
   // product
-  CATEGORY_NOT_FOUND(4001);
+  CATEGORY_NOT_FOUND(4001),
+  FIELD_NOT_FOUND(4002);
 
   private final int code;
 }

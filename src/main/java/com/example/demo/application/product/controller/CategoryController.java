@@ -2,10 +2,12 @@ package com.example.demo.application.product.controller;
 
 import com.example.demo.application.product.command.AddFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
+import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
 import com.example.demo.application.product.dto.AddFieldResDto;
 import com.example.demo.application.product.dto.MakeCategoryReqDto;
 import com.example.demo.application.product.dto.MakeCategoryResDto;
+import com.example.demo.application.product.dto.UpdateFieldReqDto;
 import com.example.demo.application.product.serializer.CategorySerializer;
 import com.example.demo.application.product.service.CategoryService;
 import com.example.demo.platform.shared.dto.ResponseDto;
@@ -20,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -66,5 +69,23 @@ public class CategoryController {
     String id = categoryService.addField(command);
 
     return categorySerializer.serializeAddFieldResponse(id);
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "/{categoryId}/fields/{fieldId}")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Update a field")
+  ResponseDto<Void> updateField(
+      @AuthenticationPrincipal UserDetails user,
+      @Valid @PathVariable @UUID String categoryId,
+      @Valid @PathVariable @UUID String fieldId,
+      @Valid @RequestBody UpdateFieldReqDto dto) {
+    UpdateFieldCommand command =
+        categorySerializer.serializeUpdateFieldCommand(user, categoryId, fieldId, dto);
+
+    categoryService.updateField(command);
+
+    return categorySerializer.serializeUpdateFieldResponse();
   }
 }
