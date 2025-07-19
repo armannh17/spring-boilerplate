@@ -8,11 +8,9 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -37,11 +35,10 @@ public class CategoryEntity extends BaseEntity {
   @Column(name = "store_id", nullable = false, updatable = true, columnDefinition = "UUID")
   private UUID storeId;
 
-  @Builder.Default
   @OneToMany(
       mappedBy = "category",
       cascade = CascadeType.ALL,
       fetch = FetchType.LAZY,
       orphanRemoval = true)
-  private List<FieldEntity> fields = new ArrayList<>();
+  private List<FieldEntity> fields;
 }
