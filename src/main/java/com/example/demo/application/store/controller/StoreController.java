@@ -42,7 +42,7 @@ public class StoreController {
     this.storeService = storeService;
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('OWNER')")
   @ResponseStatus(HttpStatus.CREATED)
   @PostMapping(path = "/")
   @SecurityRequirement(name = "Bearer Authentication")
@@ -67,7 +67,7 @@ public class StoreController {
     return storeSerializer.serializeGetStoreResponse(store);
   }
 
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasRole('OWNER')")
   @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/{id}")
   @SecurityRequirement(name = "Bearer Authentication")
