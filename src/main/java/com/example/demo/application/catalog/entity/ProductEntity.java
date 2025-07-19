@@ -1,6 +1,5 @@
 package com.example.demo.application.catalog.entity;
 
-
 import com.example.demo.platform.shared.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
