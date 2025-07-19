@@ -6,11 +6,16 @@ import com.example.demo.application.product.command.MakeCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
 import com.example.demo.application.product.dto.AddFieldResDto;
+import com.example.demo.application.product.dto.GetCategoryResDto;
+import com.example.demo.application.product.dto.GetFieldResDto;
 import com.example.demo.application.product.dto.MakeCategoryReqDto;
 import com.example.demo.application.product.dto.MakeCategoryResDto;
 import com.example.demo.application.product.dto.UpdateFieldReqDto;
+import com.example.demo.application.product.model.CategoryModel;
+import com.example.demo.application.product.query.GetCategoryQuery;
 import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,9 +37,42 @@ public class CategorySerializer {
   public ResponseDto<MakeCategoryResDto> serializeMakeCategoryResponse(String id) {
     return ResponseDto.<MakeCategoryResDto>builder()
         .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.CREATED.value())
+        .status(HttpStatus.OK.value())
         .message("successful")
         .data(MakeCategoryResDto.builder().id(id).build())
+        .build();
+  }
+
+  public GetCategoryQuery serializeGetCategoryQuery(String storeId) {
+    return GetCategoryQuery.builder().storeId(UUID.fromString(storeId)).build();
+  }
+
+  public ResponseDto<List<GetCategoryResDto>> serializeGetCategoryResponse(
+      List<CategoryModel> categories) {
+    return ResponseDto.<List<GetCategoryResDto>>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(HttpStatus.CREATED.value())
+        .message("successful")
+        .data(
+            categories.stream()
+                .map(
+                    c ->
+                        GetCategoryResDto.builder()
+                            .id(c.getId().toString())
+                            .name(c.getName())
+                            .image(c.getImage())
+                            .description(c.getDescription())
+                            .fields(
+                                c.getFields().stream()
+                                    .map(
+                                        f ->
+                                            GetFieldResDto.builder()
+                                                .id(f.getId().toString())
+                                                .name(f.getName())
+                                                .build())
+                                    .toList())
+                            .build())
+                .toList())
         .build();
   }
 

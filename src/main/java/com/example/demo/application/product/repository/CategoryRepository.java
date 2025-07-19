@@ -4,6 +4,8 @@ import com.example.demo.application.product.dao.CategoryDao;
 import com.example.demo.application.product.entity.CategoryEntity;
 import com.example.demo.application.product.mapper.CategoryMapper;
 import com.example.demo.application.product.model.CategoryModel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
@@ -26,6 +28,16 @@ public class CategoryRepository {
     }
 
     return Optional.of(categoryMapper.mapToCategoryModel(category.get()));
+  }
+
+  public List<CategoryModel> findAllByStore(UUID storeId) {
+    List<CategoryEntity> categories = categoryDao.findAllByStoreId(storeId);
+
+    if (categories.isEmpty()) {
+      return new ArrayList<>();
+    }
+
+    return categories.stream().map(categoryMapper::mapToCategoryModel).toList();
   }
 
   public void save(CategoryModel category) {

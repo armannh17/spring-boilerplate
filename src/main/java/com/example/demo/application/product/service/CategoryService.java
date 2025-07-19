@@ -12,8 +12,10 @@ import com.example.demo.application.product.exception.CategoryNotFoundException;
 import com.example.demo.application.product.exception.FieldNotFoundException;
 import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.model.FieldModel;
+import com.example.demo.application.product.query.GetCategoryQuery;
 import com.example.demo.application.product.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +56,10 @@ public class CategoryService {
 
     // return the new category id
     return category.getId().toString();
+  }
+
+  public List<CategoryModel> getCategoryList(GetCategoryQuery query) {
+    return categoryRepository.findAllByStore(query.getStoreId());
   }
 
   @Transactional

@@ -6,9 +6,12 @@ import com.example.demo.application.product.command.MakeCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
 import com.example.demo.application.product.dto.AddFieldResDto;
+import com.example.demo.application.product.dto.GetCategoryResDto;
 import com.example.demo.application.product.dto.MakeCategoryReqDto;
 import com.example.demo.application.product.dto.MakeCategoryResDto;
 import com.example.demo.application.product.dto.UpdateFieldReqDto;
+import com.example.demo.application.product.model.CategoryModel;
+import com.example.demo.application.product.query.GetCategoryQuery;
 import com.example.demo.application.product.serializer.CategorySerializer;
 import com.example.demo.application.product.service.CategoryService;
 import com.example.demo.platform.shared.dto.ResponseDto;
@@ -16,12 +19,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -55,6 +60,17 @@ public class CategoryController {
     String id = categoryService.makeCategory(command);
 
     return categorySerializer.serializeMakeCategoryResponse(id);
+  }
+
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping(path = "/{storeId}")
+  @Operation(summary = "Get category list")
+  ResponseDto<List<GetCategoryResDto>> getCategoryList(@Valid @PathVariable @UUID String storeId) {
+    GetCategoryQuery query = categorySerializer.serializeGetCategoryQuery(storeId);
+
+    List<CategoryModel> categories = categoryService.getCategoryList(query);
+
+    return categorySerializer.serializeGetCategoryResponse(categories);
   }
 
   @PreAuthorize("hasRole('OWNER')")
