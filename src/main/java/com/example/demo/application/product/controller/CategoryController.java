@@ -1,6 +1,7 @@
 package com.example.demo.application.product.controller;
 
 import com.example.demo.application.product.command.AddFieldCommand;
+import com.example.demo.application.product.command.DeleteFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,7 +45,7 @@ public class CategoryController {
 
   @PreAuthorize("hasRole('OWNER')")
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(path = "/")
+  @PostMapping(path = "")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Make a new category")
   ResponseDto<MakeCategoryResDto> makeCategory(
@@ -57,7 +59,7 @@ public class CategoryController {
 
   @PreAuthorize("hasRole('OWNER')")
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(path = "/{categoryId}/fields/")
+  @PostMapping(path = "/{categoryId}/fields")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Add a new field")
   ResponseDto<AddFieldResDto> addField(
@@ -87,5 +89,22 @@ public class CategoryController {
     categoryService.updateField(command);
 
     return categorySerializer.serializeUpdateFieldResponse();
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.OK)
+  @DeleteMapping(path = "/{categoryId}/fields/{fieldId}")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Delete a field")
+  ResponseDto<Void> deleteField(
+      @AuthenticationPrincipal UserDetails user,
+      @Valid @PathVariable @UUID String categoryId,
+      @Valid @PathVariable @UUID String fieldId) {
+    DeleteFieldCommand command =
+        categorySerializer.serializeDeleteFieldCommand(user, categoryId, fieldId);
+
+    categoryService.deleteField(command);
+
+    return categorySerializer.serializeDeleteFieldResponse();
   }
 }

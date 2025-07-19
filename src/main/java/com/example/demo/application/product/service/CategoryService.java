@@ -1,10 +1,12 @@
 package com.example.demo.application.product.service;
 
 import com.example.demo.application.product.command.AddFieldCommand;
+import com.example.demo.application.product.command.DeleteFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.event.CategoryCreatedEvent;
 import com.example.demo.application.product.event.FieldAddedEvent;
+import com.example.demo.application.product.event.FieldDeletedEvent;
 import com.example.demo.application.product.event.FieldUpdatedEvent;
 import com.example.demo.application.product.exception.CategoryNotFoundException;
 import com.example.demo.application.product.exception.FieldNotFoundException;
@@ -105,6 +107,38 @@ public class CategoryService {
     // publish the field updated event
     FieldUpdatedEvent event =
         FieldUpdatedEvent.builder()
+            .id(field.getId())
+            .categoryId(category.getId())
+            .userId(command.getUserId())
+            .storeId(category.getStoreId())
+            .build();
+
+    publisher.publishEvent(event);
+
+    // save the category
+    categoryRepository.save(category);
+  }
+
+  @Transactional
+  public void deleteField(DeleteFieldCommand command) {
+    // find the category
+    CategoryModel category =
+        categoryRepository
+            .findById(command.getCategoryId())
+            .orElseThrow(CategoryNotFoundException::new);
+
+    // find the field and delete it
+    FieldModel field =
+        category.getFields().stream()
+            .filter(f -> f.getId().equals(command.getId()))
+            .findFirst()
+            .orElseThrow(FieldNotFoundException::new);
+
+    category.getFields().remove(field);
+
+    // publish the field deleted event
+    FieldDeletedEvent event =
+        FieldDeletedEvent.builder()
             .id(field.getId())
             .categoryId(category.getId())
             .userId(command.getUserId())

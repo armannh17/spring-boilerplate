@@ -44,7 +44,7 @@ public class StoreController {
 
   @PreAuthorize("hasRole('OWNER')")
   @ResponseStatus(HttpStatus.CREATED)
-  @PostMapping(path = "/")
+  @PostMapping(path = "")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Make a new store")
   ResponseDto<MakeStoreResDto> makeStore(

@@ -1,6 +1,7 @@
 package com.example.demo.application.product.serializer;
 
 import com.example.demo.application.product.command.AddFieldCommand;
+import com.example.demo.application.product.command.DeleteFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
@@ -66,6 +67,23 @@ public class CategorySerializer {
   }
 
   public ResponseDto<Void> serializeUpdateFieldResponse() {
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(HttpStatus.OK.value())
+        .message("successful")
+        .build();
+  }
+
+  public DeleteFieldCommand serializeDeleteFieldCommand(
+      UserDetails user, String categoryId, String fieldId) {
+    return DeleteFieldCommand.builder()
+        .id(UUID.fromString(fieldId))
+        .categoryId(UUID.fromString(categoryId))
+        .userId(UUID.fromString(user.getUsername()))
+        .build();
+  }
+
+  public ResponseDto<Void> serializeDeleteFieldResponse() {
     return ResponseDto.<Void>builder()
         .code(ErrorCode.NO_ERROR.getCode())
         .status(HttpStatus.OK.value())
