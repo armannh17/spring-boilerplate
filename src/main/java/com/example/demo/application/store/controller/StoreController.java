@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.UUID;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,7 +74,7 @@ public class StoreController {
   @Operation(summary = "Update a store")
   ResponseDto<Void> updateStore(
       @AuthenticationPrincipal UserDetails user,
-      @Valid @PathVariable UUID id,
+      @Valid @PathVariable @UUID String id,
       @Valid @RequestBody UpdateStoreReqDto dto) {
     UpdateStoreCommand command = storeSerializer.serializeUpdateStoreCommand(user, id, dto);
 

@@ -1,5 +1,6 @@
 package com.example.demo.platform.core.handler;
 
+import com.example.demo.application.product.exception.CategoryNotFoundException;
 import com.example.demo.application.store.exception.CantUpdateVerifiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
@@ -115,6 +116,19 @@ public class ErrorHandler {
         ResponseDto.<Void>builder()
             .code(ErrorCode.OTP_IS_NOT_EXPIRED.getCode())
             .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(CategoryNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseDto<Void> handleCategoryNotFoundExceptionError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.CATEGORY_NOT_FOUND.getCode())
+            .status(HttpStatus.NOT_FOUND.value())
             .message(e.getMessage())
             .build();
 

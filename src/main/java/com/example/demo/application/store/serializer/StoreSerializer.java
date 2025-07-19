@@ -71,9 +71,9 @@ public class StoreSerializer {
   }
 
   public UpdateStoreCommand serializeUpdateStoreCommand(
-      UserDetails user, UUID id, UpdateStoreReqDto dto) {
+      UserDetails user, String id, UpdateStoreReqDto dto) {
     return UpdateStoreCommand.builder()
-        .id(id)
+        .id(UUID.fromString(id))
         .name(dto.getName())
         .image(dto.getImage())
         .brief(dto.getBrief())

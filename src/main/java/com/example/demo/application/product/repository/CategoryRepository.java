@@ -18,8 +18,8 @@ public class CategoryRepository {
     this.categoryDao = categoryDao;
   }
 
-  public Optional<CategoryModel> findByIdAndStore(UUID id, UUID storeId) {
-    Optional<CategoryEntity> category = categoryDao.findByIdAndStoreId(id, storeId);
+  public Optional<CategoryModel> findById(UUID id) {
+    Optional<CategoryEntity> category = categoryDao.findById(id);
 
     if (category.isEmpty()) {
       return Optional.empty();

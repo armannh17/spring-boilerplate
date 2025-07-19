@@ -1,6 +1,9 @@
 package com.example.demo.application.product.serializer;
 
+import com.example.demo.application.product.command.AddFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
+import com.example.demo.application.product.dto.AddFieldReqDto;
+import com.example.demo.application.product.dto.AddFieldResDto;
 import com.example.demo.application.product.dto.MakeCategoryReqDto;
 import com.example.demo.application.product.dto.MakeCategoryResDto;
 import com.example.demo.platform.shared.constant.ErrorCode;
@@ -29,6 +32,24 @@ public class CategorySerializer {
         .status(HttpStatus.CREATED.value())
         .message("successful")
         .data(MakeCategoryResDto.builder().id(id).build())
+        .build();
+  }
+
+  public AddFieldCommand serializeAddFieldCommand(
+      UserDetails user, String categoryId, AddFieldReqDto dto) {
+    return AddFieldCommand.builder()
+        .name(dto.getName())
+        .categoryId(UUID.fromString(categoryId))
+        .userId(UUID.fromString(user.getUsername()))
+        .build();
+  }
+
+  public ResponseDto<AddFieldResDto> serializeAddFieldResponse(String id) {
+    return ResponseDto.<AddFieldResDto>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(HttpStatus.CREATED.value())
+        .message("successful")
+        .data(AddFieldResDto.builder().id(id).build())
         .build();
   }
 }

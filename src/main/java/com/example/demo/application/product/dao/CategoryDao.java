@@ -1,12 +1,9 @@
 package com.example.demo.application.product.dao;
 
 import com.example.demo.application.product.entity.CategoryEntity;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryDao extends JpaRepository<CategoryEntity, UUID> {
-  Optional<CategoryEntity> findByIdAndStoreId(UUID id, UUID storeId);
-}
+public interface CategoryDao extends JpaRepository<CategoryEntity, UUID> {}

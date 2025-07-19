@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
@@ -35,10 +36,7 @@ public class CategoryEntity extends BaseEntity {
   @Column(name = "store_id", nullable = false, updatable = true, columnDefinition = "UUID")
   private UUID storeId;
 
-  @OneToMany(
-      mappedBy = "category",
-      cascade = CascadeType.ALL,
-      fetch = FetchType.LAZY,
-      orphanRemoval = true)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+  @JoinColumn(name = "category_id", nullable = false, updatable = false)
   private List<FieldEntity> fields;
 }
