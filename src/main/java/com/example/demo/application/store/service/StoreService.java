@@ -3,11 +3,14 @@ package com.example.demo.application.store.service;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.application.store.command.MakeStoreCommand;
+import com.example.demo.application.store.command.UpdateStoreCommand;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
 import com.example.demo.application.store.exception.StoreNotFoundException;
 import com.example.demo.application.store.model.StoreModel;
 import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.application.store.repository.StoreRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class StoreService {
@@ -17,6 +20,7 @@ public class StoreService {
 		this.storeRepository = storeRepository;
 	}
 
+	@Transactional
 	public String makeStore(MakeStoreCommand command) {
 		// find an existing store and throw if it exists
 		storeRepository.findBySlug(command.getSlug()).ifPresent((_) -> {
@@ -42,5 +46,21 @@ public class StoreService {
 	public StoreModel getStore(GetStoreQuery query) {
 		// find an existing store and throw if it does not exist
 		return storeRepository.findBySlug(query.getSlug()).orElseThrow(StoreNotFoundException::new);
+	}
+
+	@Transactional
+	public void updateStore(UpdateStoreCommand command) {
+		// find an existing store and throw if it does not exists
+		StoreModel store = storeRepository.findById(command.getId()).orElseThrow(StoreNotFoundException::new);
+
+		// update the store
+		store.update(command.getName(), command.getBrief(), command.getDescription(), command.getImage(),
+				command.getRaduis(), command.getDetail(), command.getAlignment());
+
+		// update colors based on the passed primary color
+		store.populateColorPalette(command.getColor());
+
+		// save the updated store
+		storeRepository.save(store);
 	}
 }

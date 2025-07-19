@@ -25,45 +25,45 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SuperBuilder
 public class StoreEntity extends BaseEntity {
-	@Column(name = "name", nullable = false, updatable = false, length = 200)
+	@Column(name = "name", nullable = false, updatable = true, length = 200)
 	private String name;
 
 	@Column(name = "slug", nullable = false, updatable = false, length = 200, unique = true)
 	private String slug;
 
-	@Column(name = "brief", nullable = false, updatable = false, length = 200)
+	@Column(name = "brief", nullable = false, updatable = true, length = 200)
 	private String brief;
 
-	@Column(name = "description", nullable = false, updatable = false, length = 200)
+	@Column(name = "description", nullable = false, updatable = true, length = 200)
 	private String description;
 
-	@Column(name = "image", nullable = false, updatable = false, length = 200)
+	@Column(name = "image", nullable = false, updatable = true, length = 200)
 	private String image;
 
-	@Column(name = "color_primary", nullable = false, updatable = false, length = 100)
+	@Column(name = "color_primary", nullable = false, updatable = true, length = 100)
 	private String colorPrimary;
 
-	@Column(name = "color_accent", nullable = false, updatable = false, length = 100)
+	@Column(name = "color_accent", nullable = false, updatable = true, length = 100)
 	private String colorAccent;
 
-	@Column(name = "color_neutral", nullable = false, updatable = false, length = 100)
+	@Column(name = "color_neutral", nullable = false, updatable = true, length = 100)
 	private String colorNeutral;
 
-	@Column(name = "color_dark", nullable = false, updatable = false, length = 100)
+	@Column(name = "color_dark", nullable = false, updatable = true, length = 100)
 	private String colorDark;
 
 	@Column(name = "verified", nullable = false, updatable = true)
 	private Boolean verified;
 
-	@Column(name = "radius", nullable = false, updatable = false, length = 100)
+	@Column(name = "radius", nullable = false, updatable = true, length = 100)
 	@JdbcType(PostgreSQLEnumJdbcType.class)
 	private Radius raduis;
 
-	@Column(name = "detail", nullable = false, updatable = false, length = 100)
+	@Column(name = "detail", nullable = false, updatable = true, length = 100)
 	@JdbcType(PostgreSQLEnumJdbcType.class)
 	private Detail detail;
 
-	@Column(name = "alignment", nullable = false, updatable = false, length = 100)
+	@Column(name = "alignment", nullable = false, updatable = true, length = 100)
 	@JdbcType(PostgreSQLEnumJdbcType.class)
 	private Alignment alignment;
 }

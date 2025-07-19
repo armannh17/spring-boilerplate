@@ -1,13 +1,16 @@
 package com.example.demo.application.store.serializer;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.application.store.command.MakeStoreCommand;
-import com.example.demo.application.store.dto.GetStoreReqDto;
+import com.example.demo.application.store.command.UpdateStoreCommand;
 import com.example.demo.application.store.dto.GetStoreResDto;
 import com.example.demo.application.store.dto.MakeStoreReqDto;
 import com.example.demo.application.store.dto.MakeStoreResDto;
+import com.example.demo.application.store.dto.UpdateStoreReqDto;
 import com.example.demo.application.store.model.StoreModel;
 import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.platform.shared.constant.ErrorCode;
@@ -27,8 +30,8 @@ public class StoreSerializer {
 				.build();
 	}
 
-	public GetStoreQuery serializeGetStoreQuery(GetStoreReqDto dto) {
-		return GetStoreQuery.builder().slug(dto.getSlug()).build();
+	public GetStoreQuery serializeGetStoreQuery(String slug) {
+		return GetStoreQuery.builder().slug(slug).build();
 	}
 
 	public ResponseDto<GetStoreResDto> serializeGetStoreResponse(StoreModel store) {
@@ -41,5 +44,16 @@ public class StoreSerializer {
 						.verified(store.getVerified()).radius(store.getRaduis()).detail(store.getDetail())
 						.alignment(store.getAlignment()).build())
 				.build();
+	}
+
+	public UpdateStoreCommand serializeUpdateStoreCommand(UUID id, UpdateStoreReqDto dto) {
+		return UpdateStoreCommand.builder().id(id).name(dto.getName()).image(dto.getImage()).brief(dto.getBrief())
+				.description(dto.getDescription()).color(dto.getColor()).raduis(dto.getRadius()).detail(dto.getDetail())
+				.alignment(dto.getAlignment()).build();
+	}
+
+	public ResponseDto<Void> serializeUpdateStoreResponse() {
+		return ResponseDto.<Void>builder().code(ErrorCode.NO_ERROR.getCode()).status(HttpStatus.OK.value())
+				.message("successful").build();
 	}
 }

@@ -39,4 +39,15 @@ public class StoreModel extends BaseModel {
 		this.colorNeutral = baseColor.generateNeutralColor();
 		this.colorDark = baseColor.generateDarkColor();
 	}
+
+	public void update(String name, String brief, String description, String image, Radius raduis, Detail detail,
+			Alignment alignment) {
+		this.name = name;
+		this.brief = brief;
+		this.description = description;
+		this.image = image;
+		this.raduis = raduis;
+		this.detail = detail;
+		this.alignment = alignment;
+	}
 }
