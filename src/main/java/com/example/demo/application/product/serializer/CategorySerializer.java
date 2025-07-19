@@ -1,8 +1,10 @@
 package com.example.demo.application.product.serializer;
 
 import com.example.demo.application.product.command.AddFieldCommand;
+import com.example.demo.application.product.command.DeleteCategoryCommand;
 import com.example.demo.application.product.command.DeleteFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
+import com.example.demo.application.product.command.UpdateCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
 import com.example.demo.application.product.dto.AddFieldResDto;
@@ -10,6 +12,7 @@ import com.example.demo.application.product.dto.GetCategoryResDto;
 import com.example.demo.application.product.dto.GetFieldResDto;
 import com.example.demo.application.product.dto.MakeCategoryReqDto;
 import com.example.demo.application.product.dto.MakeCategoryResDto;
+import com.example.demo.application.product.dto.UpdateCategoryReqDto;
 import com.example.demo.application.product.dto.UpdateFieldReqDto;
 import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.query.GetCategoryQuery;
@@ -37,9 +40,43 @@ public class CategorySerializer {
   public ResponseDto<MakeCategoryResDto> serializeMakeCategoryResponse(String id) {
     return ResponseDto.<MakeCategoryResDto>builder()
         .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .status(HttpStatus.CREATED.value())
         .message("successful")
         .data(MakeCategoryResDto.builder().id(id).build())
+        .build();
+  }
+
+  public UpdateCategoryCommand serializeUpdateCategoryCommand(
+      UserDetails user, String categoryId, UpdateCategoryReqDto dto) {
+    return UpdateCategoryCommand.builder()
+        .id(UUID.fromString(categoryId))
+        .name(dto.getName())
+        .image(dto.getImage())
+        .description(dto.getDescription())
+        .userId(UUID.fromString(user.getUsername()))
+        .build();
+  }
+
+  public ResponseDto<Void> serializeUpdateCategoryResponse() {
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(HttpStatus.OK.value())
+        .message("successful")
+        .build();
+  }
+
+  public DeleteCategoryCommand serializeDeleteCategoryCommand(UserDetails user, String categoryId) {
+    return DeleteCategoryCommand.builder()
+        .id(UUID.fromString(categoryId))
+        .userId(UUID.fromString(user.getUsername()))
+        .build();
+  }
+
+  public ResponseDto<Void> serializeDeleteCategoryResponse() {
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(HttpStatus.OK.value())
+        .message("successful")
         .build();
   }
 

@@ -14,5 +14,10 @@ public class CategoryModel extends BaseModel {
   private String description;
   private UUID storeId;
   private List<FieldModel> fields;
-  ;
+
+  public void update(String name, String image, String description) {
+    this.name = name;
+    this.image = image;
+    this.description = description;
+  }
 }

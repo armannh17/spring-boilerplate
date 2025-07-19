@@ -45,4 +45,10 @@ public class CategoryRepository {
 
     categoryDao.save(entity);
   }
+
+  public void delete(CategoryModel category) {
+    CategoryEntity entity = categoryMapper.mapToCategoryEntity(category);
+
+    categoryDao.delete(entity);
+  }
 }

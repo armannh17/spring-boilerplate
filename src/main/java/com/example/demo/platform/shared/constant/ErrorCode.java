@@ -28,7 +28,8 @@ public enum ErrorCode {
 
   // product
   CATEGORY_NOT_FOUND(4001),
-  FIELD_NOT_FOUND(4002);
+  FIELD_NOT_FOUND(4002),
+  CANT_DELETE_CATEGORY(4003);
 
   private final int code;
 }

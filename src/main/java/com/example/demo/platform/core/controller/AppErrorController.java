@@ -65,7 +65,7 @@ public class AppErrorController implements ErrorController {
 
   private ResponseEntity<ResponseDto<Void>> handleInvalidInputError() {
     int code = ErrorCode.INVALID_INPUT.getCode();
-    int status = HttpStatus.UNAUTHORIZED.value();
+    int status = HttpStatus.BAD_REQUEST.value();
     String message = "some fields are missing or invalid";
 
     return ResponseEntity.status(status)

@@ -1,5 +1,6 @@
 package com.example.demo.platform.core.handler;
 
+import com.example.demo.application.product.exception.CantDeleteCategoryException;
 import com.example.demo.application.product.exception.CategoryNotFoundException;
 import com.example.demo.application.product.exception.FieldNotFoundException;
 import com.example.demo.application.store.exception.CantUpdateVerifiedStoreException;
@@ -143,6 +144,19 @@ public class ErrorHandler {
         ResponseDto.<Void>builder()
             .code(ErrorCode.FIELD_NOT_FOUND.getCode())
             .status(HttpStatus.NOT_FOUND.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(CantDeleteCategoryException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ResponseDto<Void> handleCantDeleteCategoryError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.CANT_DELETE_CATEGORY.getCode())
+            .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
             .message(e.getMessage())
             .build();
 

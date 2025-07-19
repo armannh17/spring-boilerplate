@@ -1,13 +1,18 @@
 package com.example.demo.application.product.service;
 
 import com.example.demo.application.product.command.AddFieldCommand;
+import com.example.demo.application.product.command.DeleteCategoryCommand;
 import com.example.demo.application.product.command.DeleteFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
+import com.example.demo.application.product.command.UpdateCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.event.CategoryCreatedEvent;
+import com.example.demo.application.product.event.CategoryDeletedEvent;
+import com.example.demo.application.product.event.CategoryUpdatedEvent;
 import com.example.demo.application.product.event.FieldAddedEvent;
 import com.example.demo.application.product.event.FieldDeletedEvent;
 import com.example.demo.application.product.event.FieldUpdatedEvent;
+import com.example.demo.application.product.exception.CantDeleteCategoryException;
 import com.example.demo.application.product.exception.CategoryNotFoundException;
 import com.example.demo.application.product.exception.FieldNotFoundException;
 import com.example.demo.application.product.model.CategoryModel;
@@ -56,6 +61,53 @@ public class CategoryService {
 
     // return the new category id
     return category.getId().toString();
+  }
+
+  @Transactional
+  public void updateCategory(UpdateCategoryCommand command) {
+    // find the category
+    CategoryModel category =
+        categoryRepository.findById(command.getId()).orElseThrow(CategoryNotFoundException::new);
+
+    // update the category
+    category.update(command.getName(), command.getImage(), command.getDescription());
+
+    // publish the category updated event
+    CategoryUpdatedEvent event =
+        CategoryUpdatedEvent.builder()
+            .id(category.getId())
+            .userId(command.getUserId())
+            .storeId(category.getStoreId())
+            .build();
+
+    publisher.publishEvent(event);
+
+    // save the category
+    categoryRepository.save(category);
+  }
+
+  @Transactional
+  public void deleteCategory(DeleteCategoryCommand command) {
+    // find the category
+    CategoryModel category =
+        categoryRepository.findById(command.getId()).orElseThrow(CategoryNotFoundException::new);
+
+    if (!category.getFields().isEmpty()) {
+      throw new CantDeleteCategoryException();
+    }
+
+    // publish the category deleted event
+    CategoryDeletedEvent event =
+        CategoryDeletedEvent.builder()
+            .id(category.getId())
+            .userId(command.getUserId())
+            .storeId(category.getStoreId())
+            .build();
+
+    publisher.publishEvent(event);
+
+    // delete the category
+    categoryRepository.delete(category);
   }
 
   public List<CategoryModel> getCategoryList(GetCategoryQuery query) {

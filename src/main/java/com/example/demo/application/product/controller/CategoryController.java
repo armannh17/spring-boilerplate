@@ -1,14 +1,17 @@
 package com.example.demo.application.product.controller;
 
 import com.example.demo.application.product.command.AddFieldCommand;
+import com.example.demo.application.product.command.DeleteCategoryCommand;
 import com.example.demo.application.product.command.DeleteFieldCommand;
 import com.example.demo.application.product.command.MakeCategoryCommand;
+import com.example.demo.application.product.command.UpdateCategoryCommand;
 import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
 import com.example.demo.application.product.dto.AddFieldResDto;
 import com.example.demo.application.product.dto.GetCategoryResDto;
 import com.example.demo.application.product.dto.MakeCategoryReqDto;
 import com.example.demo.application.product.dto.MakeCategoryResDto;
+import com.example.demo.application.product.dto.UpdateCategoryReqDto;
 import com.example.demo.application.product.dto.UpdateFieldReqDto;
 import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.query.GetCategoryQuery;
@@ -60,6 +63,38 @@ public class CategoryController {
     String id = categoryService.makeCategory(command);
 
     return categorySerializer.serializeMakeCategoryResponse(id);
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.OK)
+  @PutMapping(path = "/{categoryId}")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Update a category")
+  ResponseDto<Void> updateCategory(
+      @AuthenticationPrincipal UserDetails user,
+      @Valid @PathVariable @UUID String categoryId,
+      @Valid @RequestBody UpdateCategoryReqDto dto) {
+    UpdateCategoryCommand command =
+        categorySerializer.serializeUpdateCategoryCommand(user, categoryId, dto);
+
+    categoryService.updateCategory(command);
+
+    return categorySerializer.serializeUpdateCategoryResponse();
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.OK)
+  @DeleteMapping(path = "/{categoryId}")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Delete a category")
+  ResponseDto<Void> deleteCategory(
+      @AuthenticationPrincipal UserDetails user, @Valid @PathVariable @UUID String categoryId) {
+    DeleteCategoryCommand command =
+        categorySerializer.serializeDeleteCategoryCommand(user, categoryId);
+
+    categoryService.deleteCategory(command);
+
+    return categorySerializer.serializeDeleteCategoryResponse();
   }
 
   @ResponseStatus(HttpStatus.OK)

@@ -1,6 +1,8 @@
 package com.example.demo.application.store.handler;
 
 import com.example.demo.application.product.event.CategoryCreatedEvent;
+import com.example.demo.application.product.event.CategoryDeletedEvent;
+import com.example.demo.application.product.event.CategoryUpdatedEvent;
 import com.example.demo.application.product.event.FieldAddedEvent;
 import com.example.demo.application.product.event.FieldDeletedEvent;
 import com.example.demo.application.product.event.FieldUpdatedEvent;
@@ -18,6 +20,16 @@ public class CheckStoreHandler {
 
   @EventListener
   private void on(CategoryCreatedEvent event) {
+    storeService.checkStore(event.getStoreId(), event.getUserId());
+  }
+
+  @EventListener
+  private void on(CategoryUpdatedEvent event) {
+    storeService.checkStore(event.getStoreId(), event.getUserId());
+  }
+
+  @EventListener
+  private void on(CategoryDeletedEvent event) {
     storeService.checkStore(event.getStoreId(), event.getUserId());
   }
 
