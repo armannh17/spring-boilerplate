@@ -1,5 +1,6 @@
 package com.example.demo.platform.core.handler;
 
+import com.example.demo.application.store.exception.CantUpdateVerfiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
 import com.example.demo.application.store.exception.StoreNotFoundException;
@@ -86,6 +87,19 @@ public class ErrorHandler {
     ResponseDto<Void> response =
         ResponseDto.<Void>builder()
             .code(ErrorCode.STORE_NOT_FOUND.getCode())
+            .status(HttpStatus.NOT_FOUND.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(CantUpdateVerfiedStoreException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ResponseDto<Void> handleCantUpdateVerfiedStoreError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.UNPROCESSABLE_ENTITY.getCode())
             .status(HttpStatus.NOT_FOUND.value())
             .message(e.getMessage())
             .build();

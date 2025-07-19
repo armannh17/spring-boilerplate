@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StoreDao extends JpaRepository<StoreEntity, UUID> {
   Optional<StoreEntity> findBySlug(String slug);
+
+  Optional<StoreEntity> findByIdAndUserId(UUID id, UUID userId);
 }

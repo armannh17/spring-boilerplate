@@ -18,8 +18,8 @@ public class StoreRepository {
     this.storeMapper = storeMapper;
   }
 
-  public Optional<StoreModel> findById(UUID id) {
-    Optional<StoreEntity> store = storeDao.findById(id);
+  public Optional<StoreModel> findByIdAndUser(UUID id, UUID userId) {
+    Optional<StoreEntity> store = storeDao.findByIdAndUserId(id, userId);
 
     if (store.isEmpty()) {
       return Optional.empty();

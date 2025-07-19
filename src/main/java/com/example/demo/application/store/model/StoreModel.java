@@ -3,9 +3,11 @@ package com.example.demo.application.store.model;
 import com.example.demo.application.store.constant.Alignment;
 import com.example.demo.application.store.constant.Detail;
 import com.example.demo.application.store.constant.Radius;
+import com.example.demo.application.store.exception.CantUpdateVerfiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.platform.shared.model.BaseModel;
 import com.example.demo.platform.shared.object.ColorObject;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
@@ -25,6 +27,7 @@ public class StoreModel extends BaseModel {
   private Radius raduis;
   private Detail detail;
   private Alignment alignment;
+  private UUID userId;
 
   public void populateColorPalette(String hex) {
     ColorObject baseColor = new ColorObject(hex);
@@ -47,6 +50,10 @@ public class StoreModel extends BaseModel {
       Radius raduis,
       Detail detail,
       Alignment alignment) {
+    if (verified) {
+      throw new CantUpdateVerfiedStoreException();
+    }
+
     this.name = name;
     this.brief = brief;
     this.description = description;

@@ -19,4 +19,5 @@ public class UpdateStoreCommand {
   private Radius raduis;
   private Detail detail;
   private Alignment alignment;
+  private UUID userId;
 }

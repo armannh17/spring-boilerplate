@@ -19,6 +19,9 @@ CREATE TABLE store (
     radius radius NOT NULL,
     detail detail NOT NULL,
     alignment alignment NOT NULL,
+    user_id UUID NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+    CONSTRAINT fk_store_user FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE RESTRICT
 );

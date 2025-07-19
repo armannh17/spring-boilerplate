@@ -40,6 +40,7 @@ public class StoreService {
             .raduis(command.getRaduis())
             .detail(command.getDetail())
             .alignment(command.getAlignment())
+            .userId(command.getUserId())
             .build();
 
     // make colors based on the passed primary color
@@ -61,7 +62,9 @@ public class StoreService {
   public void updateStore(UpdateStoreCommand command) {
     // find an existing store and throw if it does not exists
     StoreModel store =
-        storeRepository.findById(command.getId()).orElseThrow(StoreNotFoundException::new);
+        storeRepository
+            .findByIdAndUser(command.getId(), command.getUserId())
+            .orElseThrow(StoreNotFoundException::new);
 
     // update the store
     store.update(

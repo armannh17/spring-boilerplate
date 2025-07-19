@@ -12,11 +12,12 @@ import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
 public class StoreSerializer {
-  public MakeStoreCommand serializeMakeStoreCommand(MakeStoreReqDto dto) {
+  public MakeStoreCommand serializeMakeStoreCommand(UserDetails user, MakeStoreReqDto dto) {
     return MakeStoreCommand.builder()
         .name(dto.getName())
         .slug(dto.getSlug())
@@ -27,6 +28,7 @@ public class StoreSerializer {
         .raduis(dto.getRadius())
         .detail(dto.getDetail())
         .alignment(dto.getAlignment())
+        .userId(UUID.fromString(user.getUsername()))
         .build();
   }
 
@@ -68,7 +70,8 @@ public class StoreSerializer {
         .build();
   }
 
-  public UpdateStoreCommand serializeUpdateStoreCommand(UUID id, UpdateStoreReqDto dto) {
+  public UpdateStoreCommand serializeUpdateStoreCommand(
+      UserDetails user, UUID id, UpdateStoreReqDto dto) {
     return UpdateStoreCommand.builder()
         .id(id)
         .name(dto.getName())
@@ -79,6 +82,7 @@ public class StoreSerializer {
         .raduis(dto.getRadius())
         .detail(dto.getDetail())
         .alignment(dto.getAlignment())
+        .userId(UUID.fromString(user.getUsername()))
         .build();
   }
 

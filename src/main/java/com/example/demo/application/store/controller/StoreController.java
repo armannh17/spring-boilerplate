@@ -19,6 +19,8 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,8 +47,9 @@ public class StoreController {
   @PostMapping(path = "/")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Make a new store")
-  ResponseDto<MakeStoreResDto> makeStore(@Valid @RequestBody MakeStoreReqDto dto) {
-    MakeStoreCommand command = storeSerializer.serializeMakeStoreCommand(dto);
+  ResponseDto<MakeStoreResDto> makeStore(
+      @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeStoreReqDto dto) {
+    MakeStoreCommand command = storeSerializer.serializeMakeStoreCommand(user, dto);
 
     String id = storeService.makeStore(command);
 
@@ -70,8 +73,10 @@ public class StoreController {
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Update a store")
   ResponseDto<Void> updateStore(
-      @Valid @PathVariable UUID id, @Valid @RequestBody UpdateStoreReqDto dto) {
-    UpdateStoreCommand command = storeSerializer.serializeUpdateStoreCommand(id, dto);
+      @AuthenticationPrincipal UserDetails user,
+      @Valid @PathVariable UUID id,
+      @Valid @RequestBody UpdateStoreReqDto dto) {
+    UpdateStoreCommand command = storeSerializer.serializeUpdateStoreCommand(user, id, dto);
 
     storeService.updateStore(command);
 
