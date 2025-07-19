@@ -8,5 +8,5 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 public abstract class BaseEvent<R> {
-	private R result;
+  private R result;
 }

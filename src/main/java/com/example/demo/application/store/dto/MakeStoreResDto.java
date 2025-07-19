@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MakeStoreResDto {
-	private String id;
+  private String id;
 }

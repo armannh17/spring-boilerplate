@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class GenerateUploadLinkResDto {
-	private String key;
-	private String url;
+  private String key;
+  private String url;
 }

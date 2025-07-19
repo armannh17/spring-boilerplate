@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class LoginUserCommand {
-	private final String phone;
+  private final String phone;
 }

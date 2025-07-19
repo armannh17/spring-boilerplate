@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class AuthenticateUserCommand {
-	private final String phone;
-	private final String otp;
+  private final String phone;
+  private final String otp;
 }

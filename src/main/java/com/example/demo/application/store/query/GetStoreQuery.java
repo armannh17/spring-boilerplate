@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class GetStoreQuery {
-	private String slug;
+  private String slug;
 }

@@ -1,38 +1,36 @@
 package com.example.demo.application.user.model;
 
-import java.util.Date;
-
 import com.example.demo.application.user.exception.InvalidCredentialException;
 import com.example.demo.platform.shared.model.BaseModel;
-
+import java.util.Date;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
 public class CredentialModel extends BaseModel {
-	private String otpCode;
-	private Date otpExpiry;
+  private String otpCode;
+  private Date otpExpiry;
 
-	public void requestOtp(Integer length, Long expiry) {
-		// generate a random number for otp
-		int min = (int) Math.pow(10, length - 1);
-		int max = (int) Math.pow(10, length) - 1;
-		int number = new java.util.Random().nextInt(max - min + 1) + min;
+  public void requestOtp(Integer length, Long expiry) {
+    // generate a random number for otp
+    int min = (int) Math.pow(10, length - 1);
+    int max = (int) Math.pow(10, length) - 1;
+    int number = new java.util.Random().nextInt(max - min + 1) + min;
 
-		otpCode = String.valueOf(number);
+    otpCode = String.valueOf(number);
 
-		// set the expiry time
-		otpExpiry = new Date(System.currentTimeMillis() + expiry);
-	}
+    // set the expiry time
+    otpExpiry = new Date(System.currentTimeMillis() + expiry);
+  }
 
-	public void verifyOtp(String otp) {
-		Date currentTimestamp = new Date();
+  public void verifyOtp(String otp) {
+    Date currentTimestamp = new Date();
 
-		if (otp.equals(otpCode) && otpExpiry.after(currentTimestamp)) {
-			return;
-		}
+    if (otp.equals(otpCode) && otpExpiry.after(currentTimestamp)) {
+      return;
+    }
 
-		throw new InvalidCredentialException();
-	}
+    throw new InvalidCredentialException();
+  }
 }
