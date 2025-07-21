@@ -2,6 +2,7 @@ package com.example.demo.application.store.service;
 
 import com.example.demo.application.store.command.MakeStoreCommand;
 import com.example.demo.application.store.command.UpdateStoreCommand;
+import com.example.demo.application.store.exception.AccessToStoreDeniedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
 import com.example.demo.application.store.exception.StoreNotFoundException;
 import com.example.demo.application.store.model.StoreModel;
@@ -62,7 +63,10 @@ public class StoreService {
   @Transactional
   public void updateStore(UpdateStoreCommand command) {
     // find an existing store and throw if it does not exists
-    StoreModel store = checkStore(command.getId(), command.getUserId());
+    StoreModel store =
+        storeRepository
+            .findByIdAndUser(command.getId(), command.getUserId())
+            .orElseThrow(StoreNotFoundException::new);
 
     // update the store
     store.update(
@@ -82,6 +86,8 @@ public class StoreService {
   }
 
   public StoreModel checkStore(UUID id, UUID userId) {
-    return storeRepository.findByIdAndUser(id, userId).orElseThrow(StoreNotFoundException::new);
+    return storeRepository
+        .findByIdAndUser(id, userId)
+        .orElseThrow(AccessToStoreDeniedException::new);
   }
 }

@@ -6,6 +6,7 @@ import com.example.demo.application.product.exception.CategoryNotFoundException;
 import com.example.demo.application.product.exception.FieldNotFoundException;
 import com.example.demo.application.product.exception.ProductNotFoundException;
 import com.example.demo.application.product.exception.VariantNotFoundException;
+import com.example.demo.application.store.exception.AccessToStoreDeniedException;
 import com.example.demo.application.store.exception.CantUpdateVerifiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
@@ -95,6 +96,19 @@ public class ErrorHandler {
         ResponseDto.<Void>builder()
             .code(ErrorCode.STORE_NOT_FOUND.getCode())
             .status(HttpStatus.NOT_FOUND.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(AccessToStoreDeniedException.class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  public ResponseDto<Void> handleAccessToStoreDeniedError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.ACCESS_TO_STORE_DENIED.getCode())
+            .status(HttpStatus.FORBIDDEN.value())
             .message(e.getMessage())
             .build();
 

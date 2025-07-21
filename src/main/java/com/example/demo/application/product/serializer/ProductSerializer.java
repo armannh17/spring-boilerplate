@@ -5,10 +5,12 @@ import com.example.demo.application.product.command.AddVarietyCommand;
 import com.example.demo.application.product.command.DeleteProductCommand;
 import com.example.demo.application.product.command.DeleteVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
+import com.example.demo.application.product.command.UpdateProductCommand;
 import com.example.demo.application.product.dto.AddVariantReqDto;
 import com.example.demo.application.product.dto.AddVariantResDto;
 import com.example.demo.application.product.dto.MakeProductReqDto;
 import com.example.demo.application.product.dto.MakeProductResDto;
+import com.example.demo.application.product.dto.UpdateProductReqDto;
 import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import java.util.List;
@@ -37,6 +39,25 @@ public class ProductSerializer {
         .status(HttpStatus.CREATED.value())
         .message("successful")
         .data(MakeProductResDto.builder().id(id).build())
+        .build();
+  }
+
+  public UpdateProductCommand serializeUpdateProductCommand(
+      UserDetails user, String productId, UpdateProductReqDto dto) {
+    return UpdateProductCommand.builder()
+        .id(UUID.fromString(productId))
+        .name(dto.getName())
+        .image(dto.getImage())
+        .description(dto.getDescription())
+        .userId(UUID.fromString(user.getUsername()))
+        .build();
+  }
+
+  public ResponseDto<Void> serializeUpdateProductResponse() {
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(HttpStatus.OK.value())
+        .message("successful")
         .build();
   }
 

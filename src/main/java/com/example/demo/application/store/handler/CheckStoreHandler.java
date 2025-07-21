@@ -8,6 +8,7 @@ import com.example.demo.application.product.event.FieldDeletedEvent;
 import com.example.demo.application.product.event.FieldUpdatedEvent;
 import com.example.demo.application.product.event.ProductCreatedEvent;
 import com.example.demo.application.product.event.ProductDeletedEvent;
+import com.example.demo.application.product.event.ProductUpdatedEvent;
 import com.example.demo.application.product.event.VariantAddedEvent;
 import com.example.demo.application.product.event.VariantDeletedEvent;
 import com.example.demo.application.store.service.StoreService;
@@ -54,6 +55,11 @@ public class CheckStoreHandler {
 
   @EventListener
   private void on(ProductCreatedEvent event) {
+    storeService.checkStore(event.getStoreId(), event.getUserId());
+  }
+
+  @EventListener
+  private void on(ProductUpdatedEvent event) {
     storeService.checkStore(event.getStoreId(), event.getUserId());
   }
 

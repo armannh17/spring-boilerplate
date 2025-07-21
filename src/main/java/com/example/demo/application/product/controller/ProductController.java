@@ -4,10 +4,12 @@ import com.example.demo.application.product.command.AddVariantCommand;
 import com.example.demo.application.product.command.DeleteProductCommand;
 import com.example.demo.application.product.command.DeleteVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
+import com.example.demo.application.product.command.UpdateProductCommand;
 import com.example.demo.application.product.dto.AddVariantReqDto;
 import com.example.demo.application.product.dto.AddVariantResDto;
 import com.example.demo.application.product.dto.MakeProductReqDto;
 import com.example.demo.application.product.dto.MakeProductResDto;
+import com.example.demo.application.product.dto.UpdateProductReqDto;
 import com.example.demo.application.product.serializer.ProductSerializer;
 import com.example.demo.application.product.service.ProductService;
 import com.example.demo.platform.shared.dto.ResponseDto;
@@ -23,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -52,6 +55,23 @@ public class ProductController {
     String id = productService.makeProduct(command);
 
     return productSerializer.serializeMakeProductResponse(id);
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.CREATED)
+  @PutMapping(path = "/{productId}")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Update a product")
+  ResponseDto<Void> makeProduct(
+      @AuthenticationPrincipal UserDetails user,
+      @Valid @PathVariable @UUID String productId,
+      @Valid @RequestBody UpdateProductReqDto dto) {
+    UpdateProductCommand command =
+        productSerializer.serializeUpdateProductCommand(user, productId, dto);
+
+    productService.updateProduct(command);
+
+    return productSerializer.serializeUpdateProductResponse();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -88,7 +108,7 @@ public class ProductController {
   @ResponseStatus(HttpStatus.CREATED)
   @DeleteMapping(path = "/{productId}/variant/{variantId}")
   @SecurityRequirement(name = "Bearer Authentication")
-  @Operation(summary = "Add a new variant")
+  @Operation(summary = "Delete a variant")
   ResponseDto<Void> addvariant(
       @AuthenticationPrincipal UserDetails user,
       @Valid @PathVariable @UUID String productId,
