@@ -40,7 +40,7 @@ public class ProductModel extends BaseModel {
     variants.add(variant);
   }
 
-  public VariantModel removeVariant() {
+  public VariantModel deleteVariant(UUID id) {
     canUpdate();
 
     VariantModel variant =

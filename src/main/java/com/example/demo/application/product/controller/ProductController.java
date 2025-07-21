@@ -1,6 +1,7 @@
 package com.example.demo.application.product.controller;
 
 import com.example.demo.application.product.command.AddVariantCommand;
+import com.example.demo.application.product.command.DeleteVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
 import com.example.demo.application.product.dto.AddVariantReqDto;
 import com.example.demo.application.product.dto.AddVariantResDto;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -65,5 +67,22 @@ public class ProductController {
     String id = productService.addVariant(command);
 
     return productSerializer.serializeAddVariantResponse(id);
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.CREATED)
+  @DeleteMapping(path = "/{productId}/variant/{variantId}")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Add a new variant")
+  ResponseDto<Void> addvariant(
+      @AuthenticationPrincipal UserDetails user,
+      @Valid @PathVariable @UUID String productId,
+      @Valid @PathVariable @UUID String variantId) {
+    DeleteVariantCommand command =
+        productSerializer.serializeDeleteVariantCommand(user, productId, variantId);
+
+    productService.deleleVariant(command);
+
+    return productSerializer.serializeDeleteVariantResponse();
   }
 }
