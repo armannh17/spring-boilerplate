@@ -12,6 +12,22 @@ public class ProductModel extends BaseModel {
   private String name;
   private String image;
   private String description;
+  private Boolean published;
+  private Boolean archived;
   private UUID fieldId;
   private List<VariantModel> variants;
+
+  public void update(String name, String image, String description) {
+    this.name = name;
+    this.image = image;
+    this.description = description;
+  }
+
+  public void publish() {
+    published = true;
+  }
+
+  public void archive() {
+    archived = true;
+  }
 }

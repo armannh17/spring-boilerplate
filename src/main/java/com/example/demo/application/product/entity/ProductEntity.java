@@ -33,6 +33,12 @@ public class ProductEntity extends BaseEntity {
   @Column(name = "description", nullable = false, updatable = true, columnDefinition = "text")
   private String description;
 
+  @Column(name = "published", nullable = false, updatable = true)
+  private Boolean published;
+
+  @Column(name = "archived", nullable = false, updatable = true)
+  private Boolean archived;
+
   @Column(name = "field_id", nullable = false, updatable = true, columnDefinition = "UUID")
   private UUID fieldId;
 

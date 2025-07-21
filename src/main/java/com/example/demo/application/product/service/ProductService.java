@@ -24,6 +24,8 @@ public class ProductService {
             .name(command.getName())
             .image(command.getImage())
             .description(command.getDescription())
+            .published(false)
+            .archived(false)
             .fieldId(command.getFieldId())
             .build();
 

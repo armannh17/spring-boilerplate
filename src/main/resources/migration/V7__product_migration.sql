@@ -3,6 +3,8 @@ CREATE TABLE product (
     name VARCHAR(200) NOT NULL,
     image VARCHAR(200) NOT NULL,
     description TEXT NOT NULL,
+    published BOOLEAN NOT NULL,
+    archived BOOLEAN NOT NULL,
     field_id UUID NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
