@@ -30,6 +30,16 @@ public class CategoryRepository {
     return Optional.of(categoryMapper.mapToCategoryModel(category.get()));
   }
 
+  public Optional<CategoryModel> findByField(UUID fieldId) {
+    Optional<CategoryEntity> category = categoryDao.findByFields_Id(fieldId);
+
+    if (category.isEmpty()) {
+      return Optional.empty();
+    }
+
+    return Optional.of(categoryMapper.mapToCategoryModel(category.get()));
+  }
+
   public List<CategoryModel> findAllByStore(UUID storeId) {
     List<CategoryEntity> categories = categoryDao.findAllByStoreId(storeId);
 

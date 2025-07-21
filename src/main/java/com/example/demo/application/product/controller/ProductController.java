@@ -1,0 +1,48 @@
+package com.example.demo.application.product.controller;
+
+import com.example.demo.application.product.command.MakeProductCommand;
+import com.example.demo.application.product.dto.MakeProductReqDto;
+import com.example.demo.application.product.dto.MakeProductResDto;
+import com.example.demo.application.product.serializer.ProductSerializer;
+import com.example.demo.application.product.service.ProductService;
+import com.example.demo.platform.shared.dto.ResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(path = "/products")
+@Tag(name = "Product", description = "Product Management")
+public class ProductController {
+  private final ProductSerializer productSerializer;
+  private final ProductService productService;
+
+  public ProductController(ProductSerializer productSerializer, ProductService productService) {
+    this.productSerializer = productSerializer;
+    this.productService = productService;
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(path = "")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Make a new product")
+  ResponseDto<MakeProductResDto> makeProduct(
+      @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeProductReqDto dto) {
+    MakeProductCommand command = productSerializer.serializeMakeProductCommand(user, dto);
+
+    String id = productService.makeProduct(command);
+
+    return productSerializer.serializeMakeProductResponse(id);
+  }
+}

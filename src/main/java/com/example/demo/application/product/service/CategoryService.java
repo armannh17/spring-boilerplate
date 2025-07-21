@@ -19,6 +19,7 @@ import com.example.demo.application.product.query.GetCategoryQuery;
 import com.example.demo.application.product.repository.CategoryRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -189,5 +190,9 @@ public class CategoryService {
 
     // save the category
     categoryRepository.save(category);
+  }
+
+  public void checkCategory(UUID fieldId) {
+    categoryRepository.findByField(fieldId).orElseThrow(CategoryNotFoundException::new);
   }
 }
