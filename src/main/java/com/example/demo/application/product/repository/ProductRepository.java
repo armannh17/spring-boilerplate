@@ -33,4 +33,10 @@ public class ProductRepository {
 
     productDao.save(entity);
   }
+
+  public void delete(ProductModel product) {
+    ProductEntity entity = productMapper.mapToProductEntity(product);
+
+    productDao.delete(entity);
+  }
 }

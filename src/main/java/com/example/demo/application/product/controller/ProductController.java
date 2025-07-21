@@ -1,6 +1,7 @@
 package com.example.demo.application.product.controller;
 
 import com.example.demo.application.product.command.AddVariantCommand;
+import com.example.demo.application.product.command.DeleteProductCommand;
 import com.example.demo.application.product.command.DeleteVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
 import com.example.demo.application.product.dto.AddVariantReqDto;
@@ -51,6 +52,20 @@ public class ProductController {
     String id = productService.makeProduct(command);
 
     return productSerializer.serializeMakeProductResponse(id);
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.CREATED)
+  @DeleteMapping(path = "/{productId}")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Delete a product")
+  ResponseDto<Void> deleteProduct(
+      @AuthenticationPrincipal UserDetails user, @Valid @PathVariable @UUID String productId) {
+    DeleteProductCommand command = productSerializer.serializeDeleteProductCommand(user, productId);
+
+    productService.deleteProduct(command);
+
+    return productSerializer.serializeDeleteProductResponse();
   }
 
   @PreAuthorize("hasRole('OWNER')")

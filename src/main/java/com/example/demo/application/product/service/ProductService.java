@@ -1,9 +1,11 @@
 package com.example.demo.application.product.service;
 
 import com.example.demo.application.product.command.AddVariantCommand;
+import com.example.demo.application.product.command.DeleteProductCommand;
 import com.example.demo.application.product.command.DeleteVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
 import com.example.demo.application.product.event.ProductCreatedEvent;
+import com.example.demo.application.product.event.ProductDeletedEvent;
 import com.example.demo.application.product.event.VariantAddedEvent;
 import com.example.demo.application.product.event.VariantDeletedEvent;
 import com.example.demo.application.product.exception.ProductNotFoundException;
@@ -57,6 +59,29 @@ public class ProductService {
 
     // return the id of the new product
     return product.getId().toString();
+  }
+
+  @Transactional
+  public void deleteProduct(DeleteProductCommand command) {
+    // find a product and throw if it does not exist
+    ProductModel product =
+        productRepository.findById(command.getId()).orElseThrow(ProductNotFoundException::new);
+
+    // delete the product
+    product.delete();
+
+    // publish the product deleted event
+    ProductDeletedEvent event =
+        ProductDeletedEvent.builder()
+            .id(product.getId())
+            .storeId(product.getStoreId())
+            .userId(command.getUserId())
+            .build();
+
+    publisher.publishEvent(event);
+
+    // save the changes
+    productRepository.delete(product);
   }
 
   @Transactional

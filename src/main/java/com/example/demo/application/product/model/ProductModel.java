@@ -26,6 +26,10 @@ public class ProductModel extends BaseModel {
     this.description = description;
   }
 
+  public void delete() {
+    canChange();
+  }
+
   public void publish() {
     published = true;
   }
@@ -35,13 +39,13 @@ public class ProductModel extends BaseModel {
   }
 
   public void addVariant(VariantModel variant) {
-    canUpdate();
+    canChange();
 
     variants.add(variant);
   }
 
   public VariantModel deleteVariant(UUID id) {
-    canUpdate();
+    canChange();
 
     VariantModel variant =
         variants.stream()
@@ -54,7 +58,7 @@ public class ProductModel extends BaseModel {
     return variant;
   }
 
-  private void canUpdate() {
+  private void canChange() {
     if (published || archived) {
       throw new CantUpdateProductException();
     }

@@ -2,6 +2,7 @@ package com.example.demo.application.product.serializer;
 
 import com.example.demo.application.product.command.AddVariantCommand;
 import com.example.demo.application.product.command.AddVarietyCommand;
+import com.example.demo.application.product.command.DeleteProductCommand;
 import com.example.demo.application.product.command.DeleteVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
 import com.example.demo.application.product.dto.AddVariantReqDto;
@@ -36,6 +37,21 @@ public class ProductSerializer {
         .status(HttpStatus.CREATED.value())
         .message("successful")
         .data(MakeProductResDto.builder().id(id).build())
+        .build();
+  }
+
+  public DeleteProductCommand serializeDeleteProductCommand(UserDetails user, String productId) {
+    return DeleteProductCommand.builder()
+        .id(UUID.fromString(productId))
+        .userId(UUID.fromString(user.getUsername()))
+        .build();
+  }
+
+  public ResponseDto<Void> serializeDeleteProductResponse() {
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(HttpStatus.OK.value())
+        .message("successful")
         .build();
   }
 
