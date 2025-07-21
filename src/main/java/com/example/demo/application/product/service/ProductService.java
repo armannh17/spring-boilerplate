@@ -1,9 +1,17 @@
 package com.example.demo.application.product.service;
 
+import com.example.demo.application.product.command.AddVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
 import com.example.demo.application.product.event.ProductCreatedEvent;
+import com.example.demo.application.product.event.VariantAddedEvent;
+import com.example.demo.application.product.exception.ProductNotFoundException;
 import com.example.demo.application.product.model.ProductModel;
+import com.example.demo.application.product.model.VariantModel;
+import com.example.demo.application.product.model.VarietyModel;
 import com.example.demo.application.product.repository.ProductRepository;
+import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +25,7 @@ public class ProductService {
     this.productRepository = productRepository;
   }
 
+  @Transactional
   public String makeProduct(MakeProductCommand command) {
     // make a new product
     ProductModel product =
@@ -27,6 +36,7 @@ public class ProductService {
             .published(false)
             .archived(false)
             .fieldId(command.getFieldId())
+            .storeId(command.getStoreId())
             .build();
 
     // publish the product created event
@@ -45,5 +55,46 @@ public class ProductService {
 
     // return the id of the new product
     return product.getId().toString();
+  }
+
+  @Transactional
+  public String addVariant(AddVariantCommand command) {
+    // find a product and throw if it does not exist
+    ProductModel product =
+        productRepository
+            .findById(command.getProductId())
+            .orElseThrow(ProductNotFoundException::new);
+
+    // make a variant and add it to the product
+    List<VarietyModel> varieties =
+        command.getVarieties().stream()
+            .map(v -> VarietyModel.builder().name(v.getName()).color(v.getColor()).build())
+            .collect(Collectors.toList());
+
+    VariantModel variant =
+        VariantModel.builder()
+            .name(command.getName())
+            .overview(command.getOverview())
+            .varieties(varieties)
+            .build();
+
+    product.addVariant(variant);
+
+    // publish the variant added event
+    VariantAddedEvent event =
+        VariantAddedEvent.builder()
+            .id(variant.getId())
+            .productId(product.getId())
+            .storeId(product.getStoreId())
+            .userId(command.getUserId())
+            .build();
+
+    publisher.publishEvent(event);
+
+    // save the variant
+    productRepository.save(product);
+
+    // return the new variant id
+    return variant.getId().toString();
   }
 }

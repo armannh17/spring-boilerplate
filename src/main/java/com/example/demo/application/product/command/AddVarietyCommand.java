@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MakeVarietyCommand {
+public class AddVarietyCommand {
   private String name;
   private String color;
 }

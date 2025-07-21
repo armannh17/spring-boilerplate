@@ -29,12 +29,8 @@ public class CategoryModel extends BaseModel {
     }
   }
 
-  public FieldModel addField(String name) {
-    FieldModel field = FieldModel.builder().name(name).build();
-
+  public void addField(FieldModel field) {
     fields.add(field);
-
-    return field;
   }
 
   public FieldModel updateField(UUID id, String name) {

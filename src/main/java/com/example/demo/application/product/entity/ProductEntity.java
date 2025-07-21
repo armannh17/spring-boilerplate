@@ -42,6 +42,9 @@ public class ProductEntity extends BaseEntity {
   @Column(name = "field_id", nullable = false, updatable = true, columnDefinition = "UUID")
   private UUID fieldId;
 
+  @Column(name = "store_id", nullable = false, updatable = true, columnDefinition = "UUID")
+  private UUID storeId;
+
   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
   @JoinColumn(name = "product_id", nullable = false, updatable = false)
   private List<VariantEntity> variants;

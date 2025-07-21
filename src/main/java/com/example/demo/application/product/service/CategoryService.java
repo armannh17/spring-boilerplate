@@ -120,7 +120,9 @@ public class CategoryService {
             .orElseThrow(CategoryNotFoundException::new);
 
     // make a new field and add it to the category
-    FieldModel field = category.addField(command.getName());
+    FieldModel field = FieldModel.builder().name(command.getName()).build();
+
+    category.addField(field);
 
     // publish the field added event
     FieldAddedEvent event =

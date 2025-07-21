@@ -1,8 +1,11 @@
 package com.example.demo.platform.core.handler;
 
 import com.example.demo.application.product.exception.CantDeleteCategoryException;
+import com.example.demo.application.product.exception.CantUpdateProductException;
 import com.example.demo.application.product.exception.CategoryNotFoundException;
 import com.example.demo.application.product.exception.FieldNotFoundException;
+import com.example.demo.application.product.exception.ProductNotFoundException;
+import com.example.demo.application.product.exception.VariantNotFoundException;
 import com.example.demo.application.store.exception.CantUpdateVerifiedStoreException;
 import com.example.demo.application.store.exception.GreyScaleColorAreNotAllowedException;
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
@@ -157,6 +160,45 @@ public class ErrorHandler {
         ResponseDto.<Void>builder()
             .code(ErrorCode.CANT_DELETE_CATEGORY.getCode())
             .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(ProductNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseDto<Void> handleProductNotFoundError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.PRODUCT_NOT_FOUND.getCode())
+            .status(HttpStatus.NOT_FOUND.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(CantUpdateProductException.class)
+  @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+  public ResponseDto<Void> handleCantUpdateProductError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.CANT_UPDATE_PRODUCT.getCode())
+            .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+            .message(e.getMessage())
+            .build();
+
+    return response;
+  }
+
+  @ExceptionHandler(VariantNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ResponseDto<Void> handleVariantNotFoundError(Exception e) {
+    ResponseDto<Void> response =
+        ResponseDto.<Void>builder()
+            .code(ErrorCode.VARIANT_NOT_FOUND.getCode())
+            .status(HttpStatus.NOT_FOUND.value())
             .message(e.getMessage())
             .build();
 

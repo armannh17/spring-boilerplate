@@ -1,6 +1,9 @@
 package com.example.demo.application.product.controller;
 
+import com.example.demo.application.product.command.AddVariantCommand;
 import com.example.demo.application.product.command.MakeProductCommand;
+import com.example.demo.application.product.dto.AddVariantReqDto;
+import com.example.demo.application.product.dto.AddVariantResDto;
 import com.example.demo.application.product.dto.MakeProductReqDto;
 import com.example.demo.application.product.dto.MakeProductResDto;
 import com.example.demo.application.product.serializer.ProductSerializer;
@@ -10,10 +13,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,5 +49,21 @@ public class ProductController {
     String id = productService.makeProduct(command);
 
     return productSerializer.serializeMakeProductResponse(id);
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.CREATED)
+  @PostMapping(path = "/{productId}/variant")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Add a new variant")
+  ResponseDto<AddVariantResDto> addvariant(
+      @AuthenticationPrincipal UserDetails user,
+      @Valid @PathVariable @UUID String productId,
+      @Valid @RequestBody AddVariantReqDto dto) {
+    AddVariantCommand command = productSerializer.serializeAddVariantCommand(user, productId, dto);
+
+    String id = productService.addVariant(command);
+
+    return productSerializer.serializeAddVariantResponse(id);
   }
 }

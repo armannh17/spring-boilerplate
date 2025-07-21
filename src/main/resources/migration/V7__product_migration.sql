@@ -6,10 +6,12 @@ CREATE TABLE product (
     published BOOLEAN NOT NULL,
     archived BOOLEAN NOT NULL,
     field_id UUID NOT NULL,
+    store_id UUID NOT NULL,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
 
-    CONSTRAINT fk_product_field FOREIGN KEY (field_id) REFERENCES field(id) ON DELETE RESTRICT
+    CONSTRAINT fk_product_field FOREIGN KEY (field_id) REFERENCES field(id) ON DELETE RESTRICT,
+    CONSTRAINT fk_product_store FOREIGN KEY (store_id) REFERENCES store(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE variant (

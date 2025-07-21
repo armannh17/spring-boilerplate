@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Builder
-public class MakeVarietyReqDto {
+public class AddVarietyReqDto {
   @Schema(description = "variety name...", example = "blue", required = true)
   @NotEmpty
   @Length(min = 1, max = 100)

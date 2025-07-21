@@ -19,7 +19,13 @@ public class ProductRepository {
   }
 
   public Optional<ProductModel> findById(UUID id) {
-    return Optional.empty();
+    Optional<ProductEntity> product = productDao.findById(id);
+
+    if (product.isEmpty()) {
+      return Optional.empty();
+    }
+
+    return Optional.of(productMapper.mapToProductModel(product.get()));
   }
 
   public void save(ProductModel product) {
