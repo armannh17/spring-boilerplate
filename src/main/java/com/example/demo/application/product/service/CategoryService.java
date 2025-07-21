@@ -12,9 +12,7 @@ import com.example.demo.application.product.event.CategoryUpdatedEvent;
 import com.example.demo.application.product.event.FieldAddedEvent;
 import com.example.demo.application.product.event.FieldDeletedEvent;
 import com.example.demo.application.product.event.FieldUpdatedEvent;
-import com.example.demo.application.product.exception.CantDeleteCategoryException;
 import com.example.demo.application.product.exception.CategoryNotFoundException;
-import com.example.demo.application.product.exception.FieldNotFoundException;
 import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.model.FieldModel;
 import com.example.demo.application.product.query.GetCategoryQuery;
@@ -88,13 +86,11 @@ public class CategoryService {
 
   @Transactional
   public void deleteCategory(DeleteCategoryCommand command) {
-    // find the category
+    // find the category and delete it
     CategoryModel category =
         categoryRepository.findById(command.getId()).orElseThrow(CategoryNotFoundException::new);
 
-    if (!category.getFields().isEmpty()) {
-      throw new CantDeleteCategoryException();
-    }
+    category.delete();
 
     // publish the category deleted event
     CategoryDeletedEvent event =
@@ -123,9 +119,7 @@ public class CategoryService {
             .orElseThrow(CategoryNotFoundException::new);
 
     // make a new field and add it to the category
-    FieldModel field = FieldModel.builder().name(command.getName()).build();
-
-    category.getFields().add(field);
+    FieldModel field = category.addField(command.getName());
 
     // publish the field added event
     FieldAddedEvent event =
@@ -154,13 +148,7 @@ public class CategoryService {
             .orElseThrow(CategoryNotFoundException::new);
 
     // find the field and update it
-    FieldModel field =
-        category.getFields().stream()
-            .filter(f -> f.getId().equals(command.getId()))
-            .findFirst()
-            .orElseThrow(FieldNotFoundException::new);
-
-    field.update(command.getName());
+    FieldModel field = category.updateField(command.getId(), command.getName());
 
     // publish the field updated event
     FieldUpdatedEvent event =
@@ -186,13 +174,7 @@ public class CategoryService {
             .orElseThrow(CategoryNotFoundException::new);
 
     // find the field and delete it
-    FieldModel field =
-        category.getFields().stream()
-            .filter(f -> f.getId().equals(command.getId()))
-            .findFirst()
-            .orElseThrow(FieldNotFoundException::new);
-
-    category.getFields().remove(field);
+    FieldModel field = category.deleteField(command.getId());
 
     // publish the field deleted event
     FieldDeletedEvent event =
