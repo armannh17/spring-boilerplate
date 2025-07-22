@@ -14,7 +14,7 @@ public class KaveNegarClient implements NotificationClient {
   }
 
   @Override
-  public void send(String receiver, String template, String... tokens) {
+  public void send(String sender, String receiver, String template, String... tokens) {
     try {
       String token1 = tokens.length >= 1 ? tokens[0] : null;
       String token2 = tokens.length >= 2 ? tokens[1] : null;

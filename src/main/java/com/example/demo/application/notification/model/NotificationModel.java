@@ -9,5 +9,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class NotificationModel extends BaseModel {
   private String template;
+  private String sender;
   private NotificationType type;
 }

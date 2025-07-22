@@ -11,4 +11,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "notification")
 public class NotificationConfig {
   private String kavenegarApiKey;
+  private String visualPanelApiKey;
 }

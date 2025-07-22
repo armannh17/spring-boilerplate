@@ -24,6 +24,9 @@ public class NotificationEntity extends BaseEntity {
   @Column(name = "template", nullable = false, updatable = true, length = 100)
   private String template;
 
+  @Column(name = "sender", nullable = false, updatable = true, length = 100)
+  private String sender;
+
   @Column(name = "type", nullable = false, updatable = true, length = 100)
   @JdbcType(PostgreSQLEnumJdbcType.class)
   private NotificationType type;

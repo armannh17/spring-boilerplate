@@ -1,7 +1,7 @@
 package com.example.demo.application.notification.service;
 
-import com.example.demo.application.notification.client.KaveNegarClient;
 import com.example.demo.application.notification.client.NotificationClient;
+import com.example.demo.application.notification.client.VisualPanelClient;
 import com.example.demo.application.notification.constant.NotificationType;
 import com.example.demo.application.notification.exception.NotificationTemplateMissingException;
 import com.example.demo.application.notification.model.NotificationModel;
@@ -14,8 +14,8 @@ public class NotificationService {
   private final NotificationRepository notificationRepository;
 
   public NotificationService(
-      KaveNegarClient kaveNegarClient, NotificationRepository notificationRepository) {
-    this.notificationClient = kaveNegarClient;
+      VisualPanelClient visualPanelClient, NotificationRepository notificationRepository) {
+    this.notificationClient = visualPanelClient;
     this.notificationRepository = notificationRepository;
   }
 
@@ -25,6 +25,7 @@ public class NotificationService {
             .findByType(NotificationType.OTP_CODE)
             .orElseThrow(NotificationTemplateMissingException::new);
 
-    this.notificationClient.send(receiver, notification.getTemplate(), otp);
+    this.notificationClient.send(
+        notification.getSender(), receiver, notification.getTemplate(), otp);
   }
 }
