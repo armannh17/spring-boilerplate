@@ -23,3 +23,6 @@ Thumbs.db
 *.class
 HELP.md
 README.md
+
+# database
+migration/
