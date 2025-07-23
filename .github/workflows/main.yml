@@ -13,18 +13,18 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Build Docker image
+        run: docker build -t application:latest .
+
+      - name: Save image to tar file
+        run: docker save application:latest -o application.tar
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Build Docker image
-        run: docker build -t application:latest .
-
-      - name: Save image to tar file
-        run: docker save application:latest -o application.tar
 
       - name: Upload image to VPS
         run: scp application.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/application.tar
@@ -47,7 +47,7 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'EOF'
             cd ./store-builder
             docker compose down || true
-            docker load -i ~/tmp/application.tar
+            docker load -i /tmp/application.tar
             docker compose up -d || true
             rm /tmp/application.tar
           EOF
