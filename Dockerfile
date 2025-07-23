@@ -1,7 +1,7 @@
 # build stage
-FROM eclipse-temurin:24-jdk-alpine as builder
+FROM eclipse-temurin:24-jdk-alpine AS builder
 
-WORKDIR /app
+WORKDIR /build
 
 COPY . .
 
@@ -10,10 +10,10 @@ RUN ./mvnw dependency:go-offline
 RUN ./mvnw package -DskipTests
 
 # run stage
-FROM eclipse-temurin:24-jre-alpine as runner
+FROM eclipse-temurin:24-jre-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app/target/app.jar app.jar
+COPY --from=builder /build/target/app.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
