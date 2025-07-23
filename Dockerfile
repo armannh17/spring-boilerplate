@@ -5,8 +5,6 @@ WORKDIR /build
 
 COPY . .
 
-RUN ./mvnw dependency:go-offline
-
 RUN ./mvnw package -DskipTests
 
 # run stage
