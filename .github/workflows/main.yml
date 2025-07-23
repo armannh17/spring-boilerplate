@@ -46,8 +46,7 @@ jobs:
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} <<'EOF'
             cd ./store-builder
-            docker compose down || true
+            docker compose down
             docker load -i /tmp/application.tar
-            docker compose up -d || true
-            rm /tmp/application.tar
+            docker compose up -d
           EOF
