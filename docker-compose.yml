@@ -13,7 +13,7 @@ services:
       - backend
 
   application:
-    image: registry.gitlab.com/armannh/store-builder:latest
+    image: application:latest
     container_name: application
     restart: always
     depends_on:
