@@ -27,7 +27,7 @@ jobs:
         run: docker save application:latest -o application.tar
 
       - name: Upload image to VPS
-        run: scp application.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/tmp/application.tar
+        run: scp application.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/application.tar
 
   deploy:
     name: Deploy on VPS
@@ -49,5 +49,5 @@ jobs:
             docker compose down || true
             docker load -i ~/tmp/application.tar
             docker compose up -d || true
-            rm ~/tmp/application.tar
+            rm /tmp/application.tar
           EOF
