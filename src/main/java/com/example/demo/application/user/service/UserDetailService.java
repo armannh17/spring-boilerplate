@@ -27,7 +27,7 @@ public class UserDetailService implements UserDetailsService {
     UserModel user =
         userRepository
             .findById(id)
-            .orElseThrow(() -> new UsernameNotFoundException("user not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("user does not exist"));
 
     String role = "ROLE_" + user.getRole().toString();
 

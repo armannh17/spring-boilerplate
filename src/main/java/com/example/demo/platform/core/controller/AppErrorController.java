@@ -5,7 +5,6 @@ import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -32,8 +31,8 @@ public class AppErrorController implements ErrorController {
   }
 
   @RequestMapping("/error")
-  public ResponseEntity<ResponseDto<Void>> handleUnknownError(HttpServletRequest request,
-      ServletWebRequest webRequest) {
+  public ResponseEntity<ResponseDto<Void>> handleUnknownError(
+      HttpServletRequest request, ServletWebRequest webRequest) {
     // get the error
     Throwable exception = errorAttributes.getError(webRequest);
 
