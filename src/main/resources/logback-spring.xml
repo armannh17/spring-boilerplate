@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+	<springProperty scope="context" name="demo" source="spring.application.demo"/>
+	<appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<timestamp/>
+				<logLevel/>
+				<loggerName/>
+				<threadName/>
+				<message/>
+				<stackTrace/>
+				<mdc/>
+			</providers>
+		</encoder>
+	</appender>
+	<logger name="org.springframework" level="INFO"/>
+	<logger name="org.hibernate" level="WARN"/>
+	<logger name="com.example" level="DEBUG"/>
+	<root level="INFO">
+		<appender-ref ref="JSON_CONSOLE"/>
+	</root>
+</configuration>

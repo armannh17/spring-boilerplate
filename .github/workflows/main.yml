@@ -20,7 +20,7 @@ jobs:
         run: docker save application:latest -o application.tar
 
       - name: Setup SSH
-        run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+        run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan -p ${{ secrets.SSH_PORT }} -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Upload Docker image to VPS
         run: scp -C application.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/tmp/application.tar
@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Setup SSH
-        run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+        run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan -p ${{ secrets.SSH_PORT }} -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Load image and restart app
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker load -i ~/tmp/application.tar && rm ~/tmp/application.tar && cd ~/store-builder && docker compose down && docker compose up -d"

@@ -5,6 +5,9 @@ import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @Hidden
 @RestController
 public class AppErrorController implements ErrorController {
+  private static final Logger logger = LoggerFactory.getLogger(AppErrorController.class);
+
   private final ErrorAttributes errorAttributes;
 
   public AppErrorController(ErrorAttributes errorAttributes) {
@@ -27,8 +32,8 @@ public class AppErrorController implements ErrorController {
   }
 
   @RequestMapping("/error")
-  public ResponseEntity<ResponseDto<Void>> handleUnknownError(
-      HttpServletRequest request, ServletWebRequest webRequest) {
+  public ResponseEntity<ResponseDto<Void>> handleUnknownError(HttpServletRequest request,
+      ServletWebRequest webRequest) {
     // get the error
     Throwable exception = errorAttributes.getError(webRequest);
 
@@ -58,7 +63,7 @@ public class AppErrorController implements ErrorController {
     }
 
     // unknown error, log the error
-    System.out.println(exception.getMessage());
+    logger.error(exception.getMessage());
 
     return handleUnknownError();
   }
