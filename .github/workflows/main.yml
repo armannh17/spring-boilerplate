@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build & Upload Docker Image
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
@@ -23,11 +23,11 @@ jobs:
         run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan -p ${{ secrets.SSH_PORT }} -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
       - name: Upload Docker image to VPS
-        run: scp -C application.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/tmp/application.tar
+        run: scp -P ${{ secrets.SSH_PORT }} -C application.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/tmp/application.tar
 
   deploy:
     name: Deploy on VPS
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: build
 
     steps:
