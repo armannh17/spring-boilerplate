@@ -55,7 +55,7 @@ jobs:
   deploy:
     name: Deploy on VPS
     runs-on: ubuntu-24.04
-    needs: build
+    needs: [prepare, build]
     env:
       IMAGE_NAME: ${{ needs.prepare.outputs.IMAGE_NAME }}
 
