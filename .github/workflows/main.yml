@@ -40,7 +40,7 @@ jobs:
       - name: Build docker image
         run: docker build -t $IMAGE_NAME .
 
-      - name: push the image into registry
+      - name: Push the image into registry
         run: docker push $IMAGE_NAME
 
       - name: Make a new GitHub release
@@ -67,7 +67,7 @@ jobs:
       - name: Pull and deploy Docker image
         run: |
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
-            echo "${{ secrets.PAT_GHCR }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo "${{ secrets.WORKFLOW_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.IMAGE_NAME }}
             cd ~/store-builder
             docker compose down
