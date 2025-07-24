@@ -6,6 +6,7 @@ on:
 
 jobs:
   prepare:
+    name: Set the Environment
     runs-on: ubuntu-24.04
     outputs:
       VERSION: ${{ steps.set-env.outputs.VERSION }}
@@ -26,8 +27,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs: prepare
     env:
-      VERSION: ${{ needs.prepare-env.outputs.VERSION }}
-      IMAGE_NAME: ${{ needs.prepare-env.outputs.IMAGE_NAME }}
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      IMAGE_NAME: ${{ needs.prepare.outputs.IMAGE_NAME }}
       
     steps:
       - name: Checkout repository
@@ -56,8 +57,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build
     env:
-      VERSION: ${{ needs.prepare-env.outputs.VERSION }}
-      IMAGE_NAME: ${{ needs.prepare-env.outputs.IMAGE_NAME }}
+      VERSION: ${{ needs.prepare.outputs.VERSION }}
+      IMAGE_NAME: ${{ needs.prepare.outputs.IMAGE_NAME }}
 
     steps:
       - name: Setup SSH
