@@ -4,15 +4,31 @@ on:
   push:
     branches: [ "main" ]
 
-env:
-  VERSION: v${{ github.run_number }}
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner | lower }}/application:v${{ github.run_number }}
-  
 jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    outputs:
+      VERSION: ${{ steps.set-env.outputs.VERSION }}
+      IMAGE_NAME: ${{ steps.set-env.outputs.IMAGE_NAME }}
+      
+    steps:
+      - name: Compute version and image name
+        id: set-env
+        run: |
+          VERSION="v${GITHUB_RUN_NUMBER}"
+          OWNER=$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_NAME="ghcr.io/${OWNER}/application:${VERSION}"
+          echo "::set-output name=VERSION::$VERSION"
+          echo "::set-output name=IMAGE_NAME::$IMAGE_NAME"
+          
   build:
     name: Build & Upload Docker Image
     runs-on: ubuntu-24.04
-
+    needs: prepare
+    env:
+      VERSION: ${{ needs.prepare-env.outputs.VERSION }}
+      IMAGE_NAME: ${{ needs.prepare-env.outputs.IMAGE_NAME }}
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,6 +55,9 @@ jobs:
     name: Deploy on VPS
     runs-on: ubuntu-24.04
     needs: build
+    env:
+      VERSION: ${{ needs.prepare-env.outputs.VERSION }}
+      IMAGE_NAME: ${{ needs.prepare-env.outputs.IMAGE_NAME }}
 
     steps:
       - name: Setup SSH
