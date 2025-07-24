@@ -57,7 +57,6 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build
     env:
-      VERSION: ${{ needs.prepare.outputs.VERSION }}
       IMAGE_NAME: ${{ needs.prepare.outputs.IMAGE_NAME }}
 
     steps:
@@ -69,7 +68,7 @@ jobs:
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
             cd ./store-builder &&
             echo "${{ secrets.WORKFLOW_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin &&
-            docker pull "${{ needs.prepare.outputs.IMAGE_NAME }}" &&
-            docker tag "${{ needs.prepare.outputs.IMAGE_NAME }}" application &&
+            docker pull "${IMAGE_NAME}" &&
+            docker tag "${IMAGE_NAME}" application &&
             docker compose down &&
             docker compose up -d'
