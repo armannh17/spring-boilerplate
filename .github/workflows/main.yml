@@ -5,8 +5,8 @@ on:
     branches: [ "main" ]
 
 env:
-  VERSION: v${{ github.sha }}
-  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/application:v${{ github.sha }}
+  VERSION: v${{ github.sha[:7] | lower) }}
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner | lower }}/application:v${{ github.sha[:7] | lower }}
   
 jobs:
   build:
