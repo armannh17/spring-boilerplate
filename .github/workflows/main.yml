@@ -67,8 +67,9 @@ jobs:
       - name: Pull and deploy Docker image
         run: |
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            cd ./store-builder &&
             echo "${{ secrets.WORKFLOW_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin &&
             docker pull "${{ needs.prepare.outputs.IMAGE_NAME }}" &&
-            cd ./store-builder &&
+            docker tag "${{ needs.prepare.outputs.IMAGE_NAME }}" application &&
             docker compose down &&
             docker compose up -d'
