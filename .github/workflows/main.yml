@@ -65,11 +65,10 @@ jobs:
 
       - name: Pull and deploy Docker image
         run: |
-          IMAGE_NAME="${{ env.IMAGE_NAME }}"
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
             cd ./store-builder &&
             echo "${{ secrets.WORKFLOW_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin &&
-            docker pull "${IMAGE_NAME}" &&
-            docker tag "${IMAGE_NAME}" application &&
+            docker pull "${{ env.IMAGE_NAME }}" &&
+            docker tag "${{ env.IMAGE_NAME }}" application &&
             docker compose down &&
             docker compose up -d'
