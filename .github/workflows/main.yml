@@ -4,6 +4,10 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  VERSION: v${{ github.sha }}
+  IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/application:v${{ github.sha }}
+  
 jobs:
   build:
     name: Build & Upload Docker Image
@@ -13,17 +17,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Build docker image
-        run: docker build -t application:latest .
+        run: docker build -t $IMAGE_NAME .
 
-      - name: Save image as tar file
-        run: docker save application:latest -o application.tar
+      - name: push the image into registry
+        run: docker push $IMAGE_NAME
 
-      - name: Setup SSH
-        run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan -p ${{ secrets.SSH_PORT }} -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
-
-      - name: Upload docker image to VPS
-        run: scp -P ${{ secrets.SSH_PORT }} -C application.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/tmp/application.tar
+      - name: Make a new GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: "Release ${{ env.VERSION }}"
+          body: "Automated release with Docker image `${{ env.IMAGE_NAME }}`"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     name: Deploy on VPS
@@ -34,5 +44,12 @@ jobs:
       - name: Setup SSH
         run: mkdir -p ~/.ssh && echo "${{ secrets.SSH_PK }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa && ssh-keyscan -p ${{ secrets.SSH_PORT }} -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Load image and restart app
-        run: ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker load -i ~/tmp/application.tar && rm ~/tmp/application.tar && cd ~/store-builder && docker compose down && docker compose up -d"
+      - name: Pull and deploy Docker image
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            docker pull ${{ env.IMAGE_NAME }}
+            cd ~/store-builder
+            docker compose down
+            docker compose up -d
+          EOF
