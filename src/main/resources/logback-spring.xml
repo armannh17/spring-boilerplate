@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
 	<springProperty scope="context" name="demo" source="spring.application.demo"/>
+
+	<logger name="org.springframework" level="INFO"/>
+	<logger name="org.hibernate" level="INFO"/>
+	<logger name="com.example" level="DEBUG"/>
+
 	<appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 			<providers>
@@ -14,10 +19,21 @@
 			</providers>
 		</encoder>
 	</appender>
-	<logger name="org.springframework" level="INFO"/>
-	<logger name="org.hibernate" level="INFO"/>
-	<logger name="com.example" level="DEBUG"/>
-	<root level="INFO">
-		<appender-ref ref="JSON_CONSOLE"/>
-	</root>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<springProfile name="prod">
+		<root level="INFO">
+			<appender-ref ref="JSON_CONSOLE"/>
+		</root>
+	</springProfile>
+	<springProfile name="!prod">
+		<root level="INFO">
+			<appender-ref ref="STDOUT"/>
+		</root>
+	</springProfile>
 </configuration>
