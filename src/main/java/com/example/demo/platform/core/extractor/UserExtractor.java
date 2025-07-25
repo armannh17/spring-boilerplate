@@ -14,7 +14,9 @@ public final class UserExtractor implements AttributeExtractor {
   public HttpAttributes extract(final HttpRequest request) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    if (authentication == null || !authentication.isAuthenticated()) {
+    if (authentication == null
+        || !authentication.isAuthenticated()
+        || !(authentication.getPrincipal() instanceof UserDetails)) {
       return HttpAttributes.EMPTY;
     }
 

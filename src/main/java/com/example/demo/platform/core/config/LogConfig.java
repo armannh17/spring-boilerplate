@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.zalando.logbook.HttpLogFormatter;
 import org.zalando.logbook.Logbook;
+import org.zalando.logbook.core.BodyFilters;
 import org.zalando.logbook.core.DefaultHttpLogFormatter;
 import org.zalando.logbook.core.DefaultHttpLogWriter;
 import org.zalando.logbook.core.DefaultSink;
@@ -25,6 +26,7 @@ public class LogConfig {
         .strategy(new WithoutBodyStrategy())
         .sink(new DefaultSink(formatter, new DefaultHttpLogWriter()))
         .attributeExtractor(new UserExtractor())
+        .bodyFilter(BodyFilters.truncate(0))
         .build();
   }
 }

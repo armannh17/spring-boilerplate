@@ -1,7 +1,7 @@
 package com.example.demo.application.user.filter;
 
-import com.example.demo.application.user.exception.InvalidTokenException;
 import com.example.demo.application.user.helper.TokenHelper;
+import com.example.demo.platform.core.handler.ResponseHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,13 +18,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class AuthFilter extends OncePerRequestFilter {
-
   private final TokenHelper tokenHelper;
   private final ApplicationContext context;
+  private final ResponseHandler responseHandler;
 
-  public AuthFilter(TokenHelper tokenHelper, ApplicationContext context) {
+  public AuthFilter(
+      TokenHelper tokenHelper, ApplicationContext context, ResponseHandler responseHandler) {
     this.tokenHelper = tokenHelper;
     this.context = context;
+    this.responseHandler = responseHandler;
   }
 
   @Override
@@ -55,7 +57,7 @@ public class AuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(auth);
       }
     } catch (Exception e) {
-      throw new InvalidTokenException();
+      responseHandler.handleUnauthorizedResponse(response);
     }
 
     filterChain.doFilter(request, response);
