@@ -27,7 +27,7 @@ public interface CategorySerializer extends BaseSerializer {
   @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
   MakeCategoryCommand serializeToMakeCategoryCommand(UserDetails user, MakeCategoryReqDto dto);
 
-  MakeCategoryResDto serializeToMakeCategoryResDto(String id);
+  MakeCategoryResDto serializeToMakeCategoryDto(String id);
 
   @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
   UpdateCategoryCommand serializeToUpdateCategoryCommand(
@@ -38,12 +38,13 @@ public interface CategorySerializer extends BaseSerializer {
 
   GetCategoryQuery serializeToGetCategoryQuery(String storeId);
 
-  List<GetCategoryResDto> serializeToGetCategoryResDtos(List<CategoryModel> categories);
+  List<GetCategoryResDto> serializeToGetCategoryDto(List<CategoryModel> categories);
 
   @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  AddFieldCommand serializeToAddFieldCommand(UserDetails user, String categoryId, AddFieldReqDto dto);
+  AddFieldCommand serializeToAddFieldCommand(
+      UserDetails user, String categoryId, AddFieldReqDto dto);
 
-  AddFieldResDto serializeToAddFieldResDto(String id);
+  AddFieldResDto serializeToAddFieldDto(String id);
 
   @Mapping(target = "id", source = "fieldId", qualifiedByName = "mapId")
   @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
@@ -52,5 +53,6 @@ public interface CategorySerializer extends BaseSerializer {
 
   @Mapping(target = "id", source = "fieldId", qualifiedByName = "mapId")
   @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  DeleteFieldCommand serializeToDeleteFieldCommand(UserDetails user, String categoryId, String fieldId);
+  DeleteFieldCommand serializeToDeleteFieldCommand(
+      UserDetails user, String categoryId, String fieldId);
 }

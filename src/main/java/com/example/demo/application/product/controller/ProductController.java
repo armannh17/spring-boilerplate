@@ -12,6 +12,7 @@ import com.example.demo.application.product.dto.MakeProductResDto;
 import com.example.demo.application.product.dto.UpdateProductReqDto;
 import com.example.demo.application.product.serializer.ProductSerializer;
 import com.example.demo.application.product.service.ProductService;
+import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -50,11 +51,18 @@ public class ProductController {
   @Operation(summary = "Make a new product")
   ResponseDto<MakeProductResDto> makeProduct(
       @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeProductReqDto dto) {
-    MakeProductCommand command = productSerializer.serializeMakeProductCommand(user, dto);
+    MakeProductCommand command = productSerializer.serializeToMakeProductCommand(user, dto);
 
     String id = productService.makeProduct(command);
 
-    return productSerializer.serializeMakeProductResponse(id);
+    MakeProductResDto response = productSerializer.serializeToMakeProductDto(id);
+
+    return ResponseDto.<MakeProductResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -67,11 +75,15 @@ public class ProductController {
       @Valid @PathVariable @UUID String productId,
       @Valid @RequestBody UpdateProductReqDto dto) {
     UpdateProductCommand command =
-        productSerializer.serializeUpdateProductCommand(user, productId, dto);
+        productSerializer.serializeToUpdateProductCommand(user, productId, dto);
 
     productService.updateProduct(command);
 
-    return productSerializer.serializeUpdateProductResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -81,11 +93,16 @@ public class ProductController {
   @Operation(summary = "Delete a product")
   ResponseDto<Void> deleteProduct(
       @AuthenticationPrincipal UserDetails user, @Valid @PathVariable @UUID String productId) {
-    DeleteProductCommand command = productSerializer.serializeDeleteProductCommand(user, productId);
+    DeleteProductCommand command =
+        productSerializer.serializeToDeleteProductCommand(user, productId);
 
     productService.deleteProduct(command);
 
-    return productSerializer.serializeDeleteProductResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -97,11 +114,19 @@ public class ProductController {
       @AuthenticationPrincipal UserDetails user,
       @Valid @PathVariable @UUID String productId,
       @Valid @RequestBody AddVariantReqDto dto) {
-    AddVariantCommand command = productSerializer.serializeAddVariantCommand(user, productId, dto);
+    AddVariantCommand command =
+        productSerializer.serializeToAddVariantCommand(user, productId, dto);
 
     String id = productService.addVariant(command);
 
-    return productSerializer.serializeAddVariantResponse(id);
+    AddVariantResDto response = productSerializer.serializeToAddVariantDto(id);
+
+    return ResponseDto.<AddVariantResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -114,10 +139,14 @@ public class ProductController {
       @Valid @PathVariable @UUID String productId,
       @Valid @PathVariable @UUID String variantId) {
     DeleteVariantCommand command =
-        productSerializer.serializeDeleteVariantCommand(user, productId, variantId);
+        productSerializer.serializeToDeleteVariantCommand(user, productId, variantId);
 
     productService.deleleVariant(command);
 
-    return productSerializer.serializeDeleteVariantResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 }

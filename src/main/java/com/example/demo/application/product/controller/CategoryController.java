@@ -63,7 +63,7 @@ public class CategoryController {
 
     String id = categoryService.makeCategory(command);
 
-    MakeCategoryResDto response = categorySerializer.serializeToMakeCategoryResDto(id);
+    MakeCategoryResDto response = categorySerializer.serializeToMakeCategoryDto(id);
 
     return ResponseDto.<MakeCategoryResDto>builder()
         .code(ErrorCode.NO_ERROR)
@@ -121,7 +121,7 @@ public class CategoryController {
 
     List<CategoryModel> categories = categoryService.getCategoryList(query);
 
-    List<GetCategoryResDto> response = categorySerializer.serializeToGetCategoryResDtos(categories);
+    List<GetCategoryResDto> response = categorySerializer.serializeToGetCategoryDto(categories);
 
     return ResponseDto.<List<GetCategoryResDto>>builder()
         .code(ErrorCode.NO_ERROR)
@@ -144,7 +144,7 @@ public class CategoryController {
 
     String id = categoryService.addField(command);
 
-    AddFieldResDto response = categorySerializer.serializeToAddFieldResDto(id);
+    AddFieldResDto response = categorySerializer.serializeToAddFieldDto(id);
 
     return ResponseDto.<AddFieldResDto>builder()
         .code(ErrorCode.NO_ERROR)

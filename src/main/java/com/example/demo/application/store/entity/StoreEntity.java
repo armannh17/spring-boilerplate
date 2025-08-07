@@ -53,7 +53,7 @@ public class StoreEntity extends BaseEntity {
 
   @Column(name = "radius", nullable = false, updatable = true, length = 100)
   @JdbcType(PostgreSQLEnumJdbcType.class)
-  private Radius raduis;
+  private Radius radius;
 
   @Column(name = "detail", nullable = false, updatable = true, length = 100)
   @JdbcType(PostgreSQLEnumJdbcType.class)

@@ -11,111 +11,44 @@ import com.example.demo.application.product.dto.AddVariantResDto;
 import com.example.demo.application.product.dto.MakeProductReqDto;
 import com.example.demo.application.product.dto.MakeProductResDto;
 import com.example.demo.application.product.dto.UpdateProductReqDto;
-import com.example.demo.platform.shared.constant.ErrorCode;
-import com.example.demo.platform.shared.dto.ResponseDto;
+import com.example.demo.platform.shared.serializer.BaseSerializer;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import org.springframework.http.HttpStatus;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-@Component
-public class ProductSerializer {
-  public MakeProductCommand serializeMakeProductCommand(UserDetails user, MakeProductReqDto dto) {
-    return MakeProductCommand.builder()
-        .name(dto.getName())
-        .image(dto.getImage())
-        .description(dto.getDescription())
-        .storeId(UUID.fromString(dto.getStoreId()))
-        .fieldId(UUID.fromString(dto.getFieldId()))
-        .userdId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+@Mapper(componentModel = "spring")
+public interface ProductSerializer extends BaseSerializer {
 
-  public ResponseDto<MakeProductResDto> serializeMakeProductResponse(String id) {
-    return ResponseDto.<MakeProductResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(MakeProductResDto.builder().id(id).build())
-        .build();
-  }
+  @Mapping(target = "storeId", source = "dto.storeId", qualifiedByName = "mapId")
+  @Mapping(target = "fieldId", source = "dto.fieldId", qualifiedByName = "mapId")
+  @Mapping(target = "userdId", source = "user", qualifiedByName = "mapId")
+  MakeProductCommand serializeToMakeProductCommand(UserDetails user, MakeProductReqDto dto);
 
-  public UpdateProductCommand serializeUpdateProductCommand(
-      UserDetails user, String productId, UpdateProductReqDto dto) {
-    return UpdateProductCommand.builder()
-        .id(UUID.fromString(productId))
-        .name(dto.getName())
-        .image(dto.getImage())
-        .description(dto.getDescription())
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+  MakeProductResDto serializeToMakeProductDto(String id);
 
-  public ResponseDto<Void> serializeUpdateProductResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  @Mapping(target = "id", source = "productId", qualifiedByName = "mapId")
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  UpdateProductCommand serializeToUpdateProductCommand(
+      UserDetails user, String productId, UpdateProductReqDto dto);
 
-  public DeleteProductCommand serializeDeleteProductCommand(UserDetails user, String productId) {
-    return DeleteProductCommand.builder()
-        .id(UUID.fromString(productId))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+  @Mapping(target = "id", source = "productId", qualifiedByName = "mapId")
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  DeleteProductCommand serializeToDeleteProductCommand(UserDetails user, String productId);
 
-  public ResponseDto<Void> serializeDeleteProductResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  @Mapping(target = "productId", source = "productId", qualifiedByName = "mapId")
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  @Mapping(target = "varieties", source = "dto.varieties")
+  AddVariantCommand serializeToAddVariantCommand(
+      UserDetails user, String productId, AddVariantReqDto dto);
 
-  public AddVariantCommand serializeAddVariantCommand(
-      UserDetails user, String productId, AddVariantReqDto dto) {
-    List<AddVarietyCommand> varieties =
-        dto.getVarieties().stream()
-            .map(v -> AddVarietyCommand.builder().name(v.getName()).color(v.getColor()).build())
-            .collect(Collectors.toList());
+  AddVariantResDto serializeToAddVariantDto(String id);
 
-    return AddVariantCommand.builder()
-        .name(dto.getName())
-        .overview(dto.getOverview())
-        .varieties(varieties)
-        .productId(UUID.fromString(productId))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+  @Mapping(target = "id", source = "variantId", qualifiedByName = "mapId")
+  @Mapping(target = "productId", source = "productId", qualifiedByName = "mapId")
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  DeleteVariantCommand serializeToDeleteVariantCommand(
+      UserDetails user, String productId, String variantId);
 
-  public ResponseDto<AddVariantResDto> serializeAddVariantResponse(String id) {
-    return ResponseDto.<AddVariantResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(AddVariantResDto.builder().id(id).build())
-        .build();
-  }
-
-  public DeleteVariantCommand serializeDeleteVariantCommand(
-      UserDetails user, String productId, String variantId) {
-
-    return DeleteVariantCommand.builder()
-        .id(UUID.fromString(variantId))
-        .productId(UUID.fromString(productId))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
-
-  public ResponseDto<Void> serializeDeleteVariantResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  List<AddVarietyCommand> mapVarieties(List<AddVariantReqDto> varieties);
 }
