@@ -74,7 +74,7 @@ public class StoreService {
         command.getBrief(),
         command.getDescription(),
         command.getImage(),
-        command.getRaduis(),
+        command.getRadius(),
         command.getDetail(),
         command.getAlignment());
 
