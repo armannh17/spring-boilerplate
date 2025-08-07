@@ -59,7 +59,8 @@ public class CategoryController {
   @Operation(summary = "Make a new category")
   ResponseDto<MakeCategoryResDto> makeCategory(
       @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeCategoryReqDto dto) {
-    MakeCategoryCommand command = categorySerializer.serializeToMakeCategoryCommand(user, dto);
+    MakeCategoryCommand command =
+        categorySerializer.serializeToMakeCategoryCommand(user.getUsername(), dto);
 
     String id = categoryService.makeCategory(command);
 
@@ -83,7 +84,7 @@ public class CategoryController {
       @Valid @PathVariable @UUID String categoryId,
       @Valid @RequestBody UpdateCategoryReqDto dto) {
     UpdateCategoryCommand command =
-        categorySerializer.serializeToUpdateCategoryCommand(user, categoryId, dto);
+        categorySerializer.serializeToUpdateCategoryCommand(user.getUsername(), categoryId, dto);
 
     categoryService.updateCategory(command);
 
@@ -102,7 +103,7 @@ public class CategoryController {
   ResponseDto<Void> deleteCategory(
       @AuthenticationPrincipal UserDetails user, @Valid @PathVariable @UUID String categoryId) {
     DeleteCategoryCommand command =
-        categorySerializer.serializeToDeleteCategoryCommand(user, categoryId);
+        categorySerializer.serializeToDeleteCategoryCommand(user.getUsername(), categoryId);
 
     categoryService.deleteCategory(command);
 
@@ -140,7 +141,8 @@ public class CategoryController {
       @AuthenticationPrincipal UserDetails user,
       @Valid @PathVariable @UUID String categoryId,
       @Valid @RequestBody AddFieldReqDto dto) {
-    AddFieldCommand command = categorySerializer.serializeToAddFieldCommand(user, categoryId, dto);
+    AddFieldCommand command =
+        categorySerializer.serializeToAddFieldCommand(user.getUsername(), categoryId, dto);
 
     String id = categoryService.addField(command);
 
@@ -165,7 +167,8 @@ public class CategoryController {
       @Valid @PathVariable @UUID String fieldId,
       @Valid @RequestBody UpdateFieldReqDto dto) {
     UpdateFieldCommand command =
-        categorySerializer.serializeToUpdateFieldCommand(user, categoryId, fieldId, dto);
+        categorySerializer.serializeToUpdateFieldCommand(
+            user.getUsername(), categoryId, fieldId, dto);
 
     categoryService.updateField(command);
 
@@ -186,7 +189,7 @@ public class CategoryController {
       @Valid @PathVariable @UUID String categoryId,
       @Valid @PathVariable @UUID String fieldId) {
     DeleteFieldCommand command =
-        categorySerializer.serializeToDeleteFieldCommand(user, categoryId, fieldId);
+        categorySerializer.serializeToDeleteFieldCommand(user.getUsername(), categoryId, fieldId);
 
     categoryService.deleteField(command);
 

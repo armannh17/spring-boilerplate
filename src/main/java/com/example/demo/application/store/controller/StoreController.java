@@ -50,7 +50,7 @@ public class StoreController {
   @Operation(summary = "Make a new store")
   ResponseDto<MakeStoreResDto> makeStore(
       @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeStoreReqDto dto) {
-    MakeStoreCommand command = storeSerializer.serializeToMakeStoreCommand(user, dto);
+    MakeStoreCommand command = storeSerializer.serializeToMakeStoreCommand(user.getUsername(), dto);
 
     String id = storeService.makeStore(command);
 
@@ -91,7 +91,8 @@ public class StoreController {
       @AuthenticationPrincipal UserDetails user,
       @Valid @PathVariable @UUID String id,
       @Valid @RequestBody UpdateStoreReqDto dto) {
-    UpdateStoreCommand command = storeSerializer.serializeToUpdateStoreCommand(user, id, dto);
+    UpdateStoreCommand command =
+        storeSerializer.serializeToUpdateStoreCommand(user.getUsername(), id, dto);
 
     storeService.updateStore(command);
 

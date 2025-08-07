@@ -51,7 +51,8 @@ public class ProductController {
   @Operation(summary = "Make a new product")
   ResponseDto<MakeProductResDto> makeProduct(
       @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeProductReqDto dto) {
-    MakeProductCommand command = productSerializer.serializeToMakeProductCommand(user, dto);
+    MakeProductCommand command =
+        productSerializer.serializeToMakeProductCommand(user.getUsername(), dto);
 
     String id = productService.makeProduct(command);
 
@@ -75,7 +76,7 @@ public class ProductController {
       @Valid @PathVariable @UUID String productId,
       @Valid @RequestBody UpdateProductReqDto dto) {
     UpdateProductCommand command =
-        productSerializer.serializeToUpdateProductCommand(user, productId, dto);
+        productSerializer.serializeToUpdateProductCommand(user.getUsername(), productId, dto);
 
     productService.updateProduct(command);
 
@@ -94,7 +95,7 @@ public class ProductController {
   ResponseDto<Void> deleteProduct(
       @AuthenticationPrincipal UserDetails user, @Valid @PathVariable @UUID String productId) {
     DeleteProductCommand command =
-        productSerializer.serializeToDeleteProductCommand(user, productId);
+        productSerializer.serializeToDeleteProductCommand(user.getUsername(), productId);
 
     productService.deleteProduct(command);
 
@@ -115,7 +116,7 @@ public class ProductController {
       @Valid @PathVariable @UUID String productId,
       @Valid @RequestBody AddVariantReqDto dto) {
     AddVariantCommand command =
-        productSerializer.serializeToAddVariantCommand(user, productId, dto);
+        productSerializer.serializeToAddVariantCommand(user.getUsername(), productId, dto);
 
     String id = productService.addVariant(command);
 
@@ -139,7 +140,7 @@ public class ProductController {
       @Valid @PathVariable @UUID String productId,
       @Valid @PathVariable @UUID String variantId) {
     DeleteVariantCommand command =
-        productSerializer.serializeToDeleteVariantCommand(user, productId, variantId);
+        productSerializer.serializeToDeleteVariantCommand(user.getUsername(), productId, variantId);
 
     productService.deleleVariant(command);
 

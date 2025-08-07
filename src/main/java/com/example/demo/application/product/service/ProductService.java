@@ -51,7 +51,7 @@ public class ProductService {
             .id(product.getId())
             .fieldId(command.getFieldId())
             .storeId(command.getStoreId())
-            .userId(command.getUserdId())
+            .userId(command.getUserId())
             .build();
 
     publisher.publishEvent(event);

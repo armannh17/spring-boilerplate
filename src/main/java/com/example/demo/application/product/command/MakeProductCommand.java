@@ -12,5 +12,5 @@ public class MakeProductCommand {
   private String description;
   private UUID storeId;
   private UUID fieldId;
-  private UUID userdId;
+  private UUID userId;
 }

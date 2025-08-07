@@ -15,41 +15,31 @@ import com.example.demo.application.product.dto.UpdateCategoryReqDto;
 import com.example.demo.application.product.dto.UpdateFieldReqDto;
 import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.query.GetCategoryQuery;
-import com.example.demo.platform.shared.serializer.BaseSerializer;
 import java.util.List;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Mapper(componentModel = "spring")
-public interface CategorySerializer extends BaseSerializer {
+public interface CategorySerializer {
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  MakeCategoryCommand serializeToMakeCategoryCommand(UserDetails user, MakeCategoryReqDto dto);
+  MakeCategoryCommand serializeToMakeCategoryCommand(String userId, MakeCategoryReqDto dto);
 
   MakeCategoryResDto serializeToMakeCategoryDto(String id);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
   UpdateCategoryCommand serializeToUpdateCategoryCommand(
-      UserDetails user, String id, UpdateCategoryReqDto dto);
+      String userId, String id, UpdateCategoryReqDto dto);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  DeleteCategoryCommand serializeToDeleteCategoryCommand(UserDetails user, String id);
+  DeleteCategoryCommand serializeToDeleteCategoryCommand(String userId, String id);
 
   GetCategoryQuery serializeToGetCategoryQuery(String storeId);
 
   List<GetCategoryResDto> serializeToGetCategoryDto(List<CategoryModel> categories);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  AddFieldCommand serializeToAddFieldCommand(
-      UserDetails user, String categoryId, AddFieldReqDto dto);
+  AddFieldCommand serializeToAddFieldCommand(String userId, String categoryId, AddFieldReqDto dto);
 
   AddFieldResDto serializeToAddFieldDto(String id);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
   UpdateFieldCommand serializeToUpdateFieldCommand(
-      UserDetails user, String categoryId, String id, UpdateFieldReqDto dto);
+      String userId, String categoryId, String id, UpdateFieldReqDto dto);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  DeleteFieldCommand serializeToDeleteFieldCommand(UserDetails user, String categoryId, String id);
+  DeleteFieldCommand serializeToDeleteFieldCommand(String userId, String categoryId, String id);
 }

@@ -10,33 +10,24 @@ import com.example.demo.application.product.dto.AddVariantResDto;
 import com.example.demo.application.product.dto.MakeProductReqDto;
 import com.example.demo.application.product.dto.MakeProductResDto;
 import com.example.demo.application.product.dto.UpdateProductReqDto;
-import com.example.demo.platform.shared.serializer.BaseSerializer;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Mapper(componentModel = "spring")
-public interface ProductSerializer extends BaseSerializer {
+public interface ProductSerializer {
 
-  @Mapping(target = "userdId", source = "user", qualifiedByName = "mapId")
-  MakeProductCommand serializeToMakeProductCommand(UserDetails user, MakeProductReqDto dto);
+  MakeProductCommand serializeToMakeProductCommand(String userId, MakeProductReqDto dto);
 
   MakeProductResDto serializeToMakeProductDto(String id);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
   UpdateProductCommand serializeToUpdateProductCommand(
-      UserDetails user, String id, UpdateProductReqDto dto);
+      String userId, String id, UpdateProductReqDto dto);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  DeleteProductCommand serializeToDeleteProductCommand(UserDetails user, String id);
+  DeleteProductCommand serializeToDeleteProductCommand(String userId, String id);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
   AddVariantCommand serializeToAddVariantCommand(
-      UserDetails user, String productId, AddVariantReqDto dto);
+      String userId, String productId, AddVariantReqDto dto);
 
   AddVariantResDto serializeToAddVariantDto(String id);
 
-  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  DeleteVariantCommand serializeToDeleteVariantCommand(
-      UserDetails user, String productId, String id);
+  DeleteVariantCommand serializeToDeleteVariantCommand(String userId, String productId, String id);
 }
