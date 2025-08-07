@@ -22,7 +22,11 @@ public class AmazonClient implements StorageClient {
     String bucket = fileConfig.getBucketName();
     Duration expiry = fileConfig.getBucketExpiry();
 
-    PutObjectRequest command = PutObjectRequest.builder().bucket(bucket).key(key).acl(ObjectCannedACL.PUBLIC_READ).build();
+    PutObjectRequest command = PutObjectRequest.builder()
+      .bucket(bucket)
+      .key(key)
+      .acl(ObjectCannedACL.PUBLIC_READ)
+      .build();
 
     PutObjectPresignRequest request =
         PutObjectPresignRequest.builder()
