@@ -17,6 +17,7 @@ import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.query.GetCategoryQuery;
 import com.example.demo.application.product.serializer.CategorySerializer;
 import com.example.demo.application.product.service.CategoryService;
+import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -58,11 +59,18 @@ public class CategoryController {
   @Operation(summary = "Make a new category")
   ResponseDto<MakeCategoryResDto> makeCategory(
       @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeCategoryReqDto dto) {
-    MakeCategoryCommand command = categorySerializer.serializeMakeCategoryCommand(user, dto);
+    MakeCategoryCommand command = categorySerializer.serializeToMakeCategoryCommand(user, dto);
 
     String id = categoryService.makeCategory(command);
 
-    return categorySerializer.serializeMakeCategoryResponse(id);
+    MakeCategoryResDto response = categorySerializer.serializeToMakeCategoryResDto(id);
+
+    return ResponseDto.<MakeCategoryResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -75,11 +83,15 @@ public class CategoryController {
       @Valid @PathVariable @UUID String categoryId,
       @Valid @RequestBody UpdateCategoryReqDto dto) {
     UpdateCategoryCommand command =
-        categorySerializer.serializeUpdateCategoryCommand(user, categoryId, dto);
+        categorySerializer.serializeToUpdateCategoryCommand(user, categoryId, dto);
 
     categoryService.updateCategory(command);
 
-    return categorySerializer.serializeUpdateCategoryResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -90,22 +102,33 @@ public class CategoryController {
   ResponseDto<Void> deleteCategory(
       @AuthenticationPrincipal UserDetails user, @Valid @PathVariable @UUID String categoryId) {
     DeleteCategoryCommand command =
-        categorySerializer.serializeDeleteCategoryCommand(user, categoryId);
+        categorySerializer.serializeToDeleteCategoryCommand(user, categoryId);
 
     categoryService.deleteCategory(command);
 
-    return categorySerializer.serializeDeleteCategoryResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(path = "/{storeId}")
   @Operation(summary = "Get category list")
   ResponseDto<List<GetCategoryResDto>> getCategoryList(@Valid @PathVariable @UUID String storeId) {
-    GetCategoryQuery query = categorySerializer.serializeGetCategoryQuery(storeId);
+    GetCategoryQuery query = categorySerializer.serializeToGetCategoryQuery(storeId);
 
     List<CategoryModel> categories = categoryService.getCategoryList(query);
 
-    return categorySerializer.serializeGetCategoryResponse(categories);
+    List<GetCategoryResDto> response = categorySerializer.serializeToGetCategoryResDtos(categories);
+
+    return ResponseDto.<List<GetCategoryResDto>>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -117,11 +140,18 @@ public class CategoryController {
       @AuthenticationPrincipal UserDetails user,
       @Valid @PathVariable @UUID String categoryId,
       @Valid @RequestBody AddFieldReqDto dto) {
-    AddFieldCommand command = categorySerializer.serializeAddFieldCommand(user, categoryId, dto);
+    AddFieldCommand command = categorySerializer.serializeToAddFieldCommand(user, categoryId, dto);
 
     String id = categoryService.addField(command);
 
-    return categorySerializer.serializeAddFieldResponse(id);
+    AddFieldResDto response = categorySerializer.serializeToAddFieldResDto(id);
+
+    return ResponseDto.<AddFieldResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -135,11 +165,15 @@ public class CategoryController {
       @Valid @PathVariable @UUID String fieldId,
       @Valid @RequestBody UpdateFieldReqDto dto) {
     UpdateFieldCommand command =
-        categorySerializer.serializeUpdateFieldCommand(user, categoryId, fieldId, dto);
+        categorySerializer.serializeToUpdateFieldCommand(user, categoryId, fieldId, dto);
 
     categoryService.updateField(command);
 
-    return categorySerializer.serializeUpdateFieldResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -152,10 +186,14 @@ public class CategoryController {
       @Valid @PathVariable @UUID String categoryId,
       @Valid @PathVariable @UUID String fieldId) {
     DeleteFieldCommand command =
-        categorySerializer.serializeDeleteFieldCommand(user, categoryId, fieldId);
+        categorySerializer.serializeToDeleteFieldCommand(user, categoryId, fieldId);
 
     categoryService.deleteField(command);
 
-    return categorySerializer.serializeDeleteFieldResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 }

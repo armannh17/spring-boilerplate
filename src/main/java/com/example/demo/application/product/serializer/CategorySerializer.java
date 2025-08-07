@@ -9,160 +9,48 @@ import com.example.demo.application.product.command.UpdateFieldCommand;
 import com.example.demo.application.product.dto.AddFieldReqDto;
 import com.example.demo.application.product.dto.AddFieldResDto;
 import com.example.demo.application.product.dto.GetCategoryResDto;
-import com.example.demo.application.product.dto.GetFieldResDto;
 import com.example.demo.application.product.dto.MakeCategoryReqDto;
 import com.example.demo.application.product.dto.MakeCategoryResDto;
 import com.example.demo.application.product.dto.UpdateCategoryReqDto;
 import com.example.demo.application.product.dto.UpdateFieldReqDto;
 import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.query.GetCategoryQuery;
-import com.example.demo.platform.shared.constant.ErrorCode;
-import com.example.demo.platform.shared.dto.ResponseDto;
+import com.example.demo.platform.shared.serializer.BaseSerializer;
 import java.util.List;
-import java.util.UUID;
-import org.springframework.http.HttpStatus;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-@Component
-public class CategorySerializer {
-  public MakeCategoryCommand serializeMakeCategoryCommand(
-      UserDetails user, MakeCategoryReqDto dto) {
-    return MakeCategoryCommand.builder()
-        .name(dto.getName())
-        .image(dto.getImage())
-        .description(dto.getDescription())
-        .storeId(UUID.fromString(dto.getStoreId()))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+@Mapper(componentModel = "spring")
+public interface CategorySerializer extends BaseSerializer {
 
-  public ResponseDto<MakeCategoryResDto> serializeMakeCategoryResponse(String id) {
-    return ResponseDto.<MakeCategoryResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(MakeCategoryResDto.builder().id(id).build())
-        .build();
-  }
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  MakeCategoryCommand serializeToMakeCategoryCommand(UserDetails user, MakeCategoryReqDto dto);
 
-  public UpdateCategoryCommand serializeUpdateCategoryCommand(
-      UserDetails user, String categoryId, UpdateCategoryReqDto dto) {
-    return UpdateCategoryCommand.builder()
-        .id(UUID.fromString(categoryId))
-        .name(dto.getName())
-        .image(dto.getImage())
-        .description(dto.getDescription())
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+  MakeCategoryResDto serializeToMakeCategoryResDto(String id);
 
-  public ResponseDto<Void> serializeUpdateCategoryResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  UpdateCategoryCommand serializeToUpdateCategoryCommand(
+      UserDetails user, String id, UpdateCategoryReqDto dto);
 
-  public DeleteCategoryCommand serializeDeleteCategoryCommand(UserDetails user, String categoryId) {
-    return DeleteCategoryCommand.builder()
-        .id(UUID.fromString(categoryId))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  DeleteCategoryCommand serializeToDeleteCategoryCommand(UserDetails user, String id);
 
-  public ResponseDto<Void> serializeDeleteCategoryResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  GetCategoryQuery serializeToGetCategoryQuery(String storeId);
 
-  public GetCategoryQuery serializeGetCategoryQuery(String storeId) {
-    return GetCategoryQuery.builder().storeId(UUID.fromString(storeId)).build();
-  }
+  List<GetCategoryResDto> serializeToGetCategoryResDtos(List<CategoryModel> categories);
 
-  public ResponseDto<List<GetCategoryResDto>> serializeGetCategoryResponse(
-      List<CategoryModel> categories) {
-    return ResponseDto.<List<GetCategoryResDto>>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(
-            categories.stream()
-                .map(
-                    c ->
-                        GetCategoryResDto.builder()
-                            .id(c.getId().toString())
-                            .name(c.getName())
-                            .image(c.getImage())
-                            .description(c.getDescription())
-                            .fields(
-                                c.getFields().stream()
-                                    .map(
-                                        f ->
-                                            GetFieldResDto.builder()
-                                                .id(f.getId().toString())
-                                                .name(f.getName())
-                                                .build())
-                                    .toList())
-                            .build())
-                .toList())
-        .build();
-  }
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  AddFieldCommand serializeToAddFieldCommand(UserDetails user, String categoryId, AddFieldReqDto dto);
 
-  public AddFieldCommand serializeAddFieldCommand(
-      UserDetails user, String categoryId, AddFieldReqDto dto) {
-    return AddFieldCommand.builder()
-        .name(dto.getName())
-        .categoryId(UUID.fromString(categoryId))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
+  AddFieldResDto serializeToAddFieldResDto(String id);
 
-  public ResponseDto<AddFieldResDto> serializeAddFieldResponse(String id) {
-    return ResponseDto.<AddFieldResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(AddFieldResDto.builder().id(id).build())
-        .build();
-  }
+  @Mapping(target = "id", source = "fieldId", qualifiedByName = "mapId")
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  UpdateFieldCommand serializeToUpdateFieldCommand(
+      UserDetails user, String categoryId, String fieldId, UpdateFieldReqDto dto);
 
-  public UpdateFieldCommand serializeUpdateFieldCommand(
-      UserDetails user, String categoryId, String fieldId, UpdateFieldReqDto dto) {
-    return UpdateFieldCommand.builder()
-        .name(dto.getName())
-        .id(UUID.fromString(fieldId))
-        .categoryId(UUID.fromString(categoryId))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
-
-  public ResponseDto<Void> serializeUpdateFieldResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
-
-  public DeleteFieldCommand serializeDeleteFieldCommand(
-      UserDetails user, String categoryId, String fieldId) {
-    return DeleteFieldCommand.builder()
-        .id(UUID.fromString(fieldId))
-        .categoryId(UUID.fromString(categoryId))
-        .userId(UUID.fromString(user.getUsername()))
-        .build();
-  }
-
-  public ResponseDto<Void> serializeDeleteFieldResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  @Mapping(target = "id", source = "fieldId", qualifiedByName = "mapId")
+  @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
+  DeleteFieldCommand serializeToDeleteFieldCommand(UserDetails user, String categoryId, String fieldId);
 }
