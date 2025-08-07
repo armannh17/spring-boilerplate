@@ -46,13 +46,10 @@ public interface CategorySerializer extends BaseSerializer {
 
   AddFieldResDto serializeToAddFieldDto(String id);
 
-  @Mapping(target = "id", source = "fieldId", qualifiedByName = "mapId")
   @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
   UpdateFieldCommand serializeToUpdateFieldCommand(
-      UserDetails user, String categoryId, String fieldId, UpdateFieldReqDto dto);
+      UserDetails user, String categoryId, String id, UpdateFieldReqDto dto);
 
-  @Mapping(target = "id", source = "fieldId", qualifiedByName = "mapId")
   @Mapping(target = "userId", source = "user", qualifiedByName = "mapId")
-  DeleteFieldCommand serializeToDeleteFieldCommand(
-      UserDetails user, String categoryId, String fieldId);
+  DeleteFieldCommand serializeToDeleteFieldCommand(UserDetails user, String categoryId, String id);
 }
