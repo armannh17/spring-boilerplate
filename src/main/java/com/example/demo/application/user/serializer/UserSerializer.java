@@ -5,44 +5,16 @@ import com.example.demo.application.user.command.LoginUserCommand;
 import com.example.demo.application.user.dto.AuthenticateUserReqDto;
 import com.example.demo.application.user.dto.AuthenticateUserResDto;
 import com.example.demo.application.user.dto.LoginUserReqDto;
-import com.example.demo.platform.shared.constant.ErrorCode;
-import com.example.demo.platform.shared.dto.ResponseDto;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class UserSerializer {
+@Mapper(componentModel = "spring")
+public interface UserSerializer {
 
-  public LoginUserCommand serializeLoginUserCommand(LoginUserReqDto dto) {
-    return LoginUserCommand.builder().phone(dto.getPhone()).build();
-  }
+  LoginUserCommand serializeToLoginUserCommand(LoginUserReqDto dto);
 
-  public ResponseDto<Void> serializeLoginUserResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  AuthenticateUserCommand serializeToAuthenticateUserCommand(AuthenticateUserReqDto dto);
 
-  public AuthenticateUserCommand serializeAuthenticateUserCommand(AuthenticateUserReqDto dto) {
-    return AuthenticateUserCommand.builder().phone(dto.getPhone()).otp(dto.getOtp()).build();
-  }
-
-  public ResponseDto<AuthenticateUserResDto> serializeAuthenticateUserResponse(String token) {
-    return ResponseDto.<AuthenticateUserResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .data(AuthenticateUserResDto.builder().token(token).build())
-        .build();
-  }
-
-  public ResponseDto<Void> serializeVerifyAuthenticationResponse() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
-  }
+  @Mapping(target = "token", source = "token")
+  AuthenticateUserResDto serializeAuthenticateUserDto(String token);
 }

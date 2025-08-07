@@ -7,6 +7,7 @@ import com.example.demo.application.user.dto.AuthenticateUserResDto;
 import com.example.demo.application.user.dto.LoginUserReqDto;
 import com.example.demo.application.user.serializer.UserSerializer;
 import com.example.demo.application.user.service.UserService;
+import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -36,11 +37,15 @@ public class UserController {
   @ResponseStatus(HttpStatus.OK)
   @Operation(summary = "Login the user")
   ResponseDto<Void> loginUser(@Valid @RequestBody LoginUserReqDto dto) {
-    LoginUserCommand command = userSerializer.serializeLoginUserCommand(dto);
+    LoginUserCommand command = userSerializer.serializeToLoginUserCommand(dto);
 
     userService.loginUser(command);
 
-    return userSerializer.serializeLoginUserResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 
   @PostMapping(path = "/auth")
@@ -48,11 +53,18 @@ public class UserController {
   @Operation(summary = "Authenticate the user")
   ResponseDto<AuthenticateUserResDto> authenticateUser(
       @Valid @RequestBody AuthenticateUserReqDto dto) {
-    AuthenticateUserCommand command = userSerializer.serializeAuthenticateUserCommand(dto);
+    AuthenticateUserCommand command = userSerializer.serializeToAuthenticateUserCommand(dto);
 
     String token = userService.authenticateUser(command);
 
-    return userSerializer.serializeAuthenticateUserResponse(token);
+    AuthenticateUserResDto response = userSerializer.serializeAuthenticateUserDto(token);
+
+    return ResponseDto.<AuthenticateUserResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -61,6 +73,10 @@ public class UserController {
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Verify the users token")
   ResponseDto<Void> verifyAuthentication() {
-    return userSerializer.serializeVerifyAuthenticationResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 }
