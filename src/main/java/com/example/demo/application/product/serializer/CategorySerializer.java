@@ -39,8 +39,8 @@ public class CategorySerializer {
 
   public ResponseDto<MakeCategoryResDto> serializeMakeCategoryResponse(String id) {
     return ResponseDto.<MakeCategoryResDto>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.CREATED.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
         .message("successful")
         .data(MakeCategoryResDto.builder().id(id).build())
         .build();
@@ -59,8 +59,8 @@ public class CategorySerializer {
 
   public ResponseDto<Void> serializeUpdateCategoryResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }
@@ -74,8 +74,8 @@ public class CategorySerializer {
 
   public ResponseDto<Void> serializeDeleteCategoryResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }
@@ -87,8 +87,8 @@ public class CategorySerializer {
   public ResponseDto<List<GetCategoryResDto>> serializeGetCategoryResponse(
       List<CategoryModel> categories) {
     return ResponseDto.<List<GetCategoryResDto>>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.CREATED.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
         .message("successful")
         .data(
             categories.stream()
@@ -124,8 +124,8 @@ public class CategorySerializer {
 
   public ResponseDto<AddFieldResDto> serializeAddFieldResponse(String id) {
     return ResponseDto.<AddFieldResDto>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.CREATED.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
         .message("successful")
         .data(AddFieldResDto.builder().id(id).build())
         .build();
@@ -143,8 +143,8 @@ public class CategorySerializer {
 
   public ResponseDto<Void> serializeUpdateFieldResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }
@@ -160,8 +160,8 @@ public class CategorySerializer {
 
   public ResponseDto<Void> serializeDeleteFieldResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }

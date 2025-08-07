@@ -35,8 +35,8 @@ public class ProductSerializer {
 
   public ResponseDto<MakeProductResDto> serializeMakeProductResponse(String id) {
     return ResponseDto.<MakeProductResDto>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.CREATED.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
         .message("successful")
         .data(MakeProductResDto.builder().id(id).build())
         .build();
@@ -55,8 +55,8 @@ public class ProductSerializer {
 
   public ResponseDto<Void> serializeUpdateProductResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }
@@ -70,8 +70,8 @@ public class ProductSerializer {
 
   public ResponseDto<Void> serializeDeleteProductResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }
@@ -94,8 +94,8 @@ public class ProductSerializer {
 
   public ResponseDto<AddVariantResDto> serializeAddVariantResponse(String id) {
     return ResponseDto.<AddVariantResDto>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.CREATED.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
         .message("successful")
         .data(AddVariantResDto.builder().id(id).build())
         .build();
@@ -113,8 +113,8 @@ public class ProductSerializer {
 
   public ResponseDto<Void> serializeDeleteVariantResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }

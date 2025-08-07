@@ -19,8 +19,8 @@ public class UserSerializer {
 
   public ResponseDto<Void> serializeLoginUserResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }
@@ -31,8 +31,8 @@ public class UserSerializer {
 
   public ResponseDto<AuthenticateUserResDto> serializeAuthenticateUserResponse(String token) {
     return ResponseDto.<AuthenticateUserResDto>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .data(AuthenticateUserResDto.builder().token(token).build())
         .build();
@@ -40,8 +40,8 @@ public class UserSerializer {
 
   public ResponseDto<Void> serializeVerifyAuthenticationResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }

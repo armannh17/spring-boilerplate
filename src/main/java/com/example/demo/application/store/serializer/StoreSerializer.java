@@ -34,8 +34,8 @@ public class StoreSerializer {
 
   public ResponseDto<MakeStoreResDto> serializeMakeStoreResponse(String id) {
     return ResponseDto.<MakeStoreResDto>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.CREATED.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
         .message("successful")
         .data(MakeStoreResDto.builder().id(id).build())
         .build();
@@ -47,8 +47,8 @@ public class StoreSerializer {
 
   public ResponseDto<GetStoreResDto> serializeGetStoreResponse(StoreModel store) {
     return ResponseDto.<GetStoreResDto>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .data(
             GetStoreResDto.builder()
@@ -88,8 +88,8 @@ public class StoreSerializer {
 
   public ResponseDto<Void> serializeUpdateStoreResponse() {
     return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR.getCode())
-        .status(HttpStatus.OK.value())
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
         .message("successful")
         .build();
   }

@@ -4,6 +4,7 @@ import com.example.demo.application.file.dto.GenerateUploadLinkResDto;
 import com.example.demo.application.file.model.UploadFileModel;
 import com.example.demo.application.file.serializer.FileSerializer;
 import com.example.demo.application.file.service.FileService;
+import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -36,6 +37,13 @@ public class FileController {
 
     UploadFileModel file = fileService.generateUploadLink();
 
-    return fileSerializer.serializeGenerateUploadLinkResponse(file);
+    GenerateUploadLinkResDto response = fileSerializer.serializeToGenerateUploadLinkDto(file);
+
+    return ResponseDto.<GenerateUploadLinkResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .data(response)
+        .build();
   }
 }

@@ -17,8 +17,8 @@ public class ResponseHandler {
   private final ObjectMapper mapper = new ObjectMapper();
 
   public ResponseEntity<ResponseDto<Void>> handleInvalidInputResponse() {
-    int code = ErrorCode.INVALID_INPUT.getCode();
-    int status = HttpStatus.BAD_REQUEST.value();
+    ErrorCode code = ErrorCode.INVALID_INPUT;
+    HttpStatus status = HttpStatus.BAD_REQUEST;
     String message = "some fields are missing or invalid";
 
     return ResponseEntity.status(status)
@@ -27,11 +27,11 @@ public class ResponseHandler {
 
   public void handleUnauthorizedResponse(HttpServletResponse response)
       throws StreamWriteException, DatabindException, IOException {
-    int code = ErrorCode.UNAUTHORIZED.getCode();
-    int status = HttpStatus.UNAUTHORIZED.value();
+    ErrorCode code = ErrorCode.UNAUTHORIZED;
+    HttpStatus status = HttpStatus.UNAUTHORIZED;
     String message = "token is missing or invalid";
 
-    response.setStatus(status);
+    response.setStatus(status.value());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     mapper.writeValue(
         response.getWriter(),
@@ -39,8 +39,8 @@ public class ResponseHandler {
   }
 
   public ResponseEntity<ResponseDto<Void>> handleNotFoundResponse() {
-    int code = ErrorCode.NOT_FOUND.getCode();
-    int status = HttpStatus.NOT_FOUND.value();
+    ErrorCode code = ErrorCode.NOT_FOUND;
+    HttpStatus status = HttpStatus.NOT_FOUND;
     String message = "uri or asset not found";
 
     return ResponseEntity.status(status)
@@ -48,8 +48,8 @@ public class ResponseHandler {
   }
 
   public ResponseEntity<ResponseDto<Void>> handleMethodNotAllowedResponse() {
-    int code = ErrorCode.METHOD_NOT_ALLOWED.getCode();
-    int status = HttpStatus.METHOD_NOT_ALLOWED.value();
+    ErrorCode code = ErrorCode.METHOD_NOT_ALLOWED;
+    HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
     String message = "method not allowed";
 
     return ResponseEntity.status(status)
@@ -57,8 +57,8 @@ public class ResponseHandler {
   }
 
   public ResponseEntity<ResponseDto<Void>> handleContentNotSupportedResponse() {
-    int code = ErrorCode.UNSUPPORTED_MEDIA_TYPE.getCode();
-    int status = HttpStatus.UNSUPPORTED_MEDIA_TYPE.value();
+    ErrorCode code = ErrorCode.UNSUPPORTED_MEDIA_TYPE;
+    HttpStatus status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
     String message = "content not supported";
 
     return ResponseEntity.status(status)
@@ -66,8 +66,8 @@ public class ResponseHandler {
   }
 
   public ResponseEntity<ResponseDto<Void>> handleUnknownResponse() {
-    int code = ErrorCode.INTERNAL_SERVER_ERROR.getCode();
-    int status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+    ErrorCode code = ErrorCode.INTERNAL_SERVER_ERROR;
+    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
     String message = "internal server error";
 
     return ResponseEntity.status(status)
