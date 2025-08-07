@@ -24,7 +24,7 @@ public class StoreModel extends BaseModel {
   private String colorNeutral;
   private String colorDark;
   private Boolean verified;
-  private Radius raduis;
+  private Radius radius;
   private Detail detail;
   private Alignment alignment;
   private UUID userId;
@@ -47,7 +47,7 @@ public class StoreModel extends BaseModel {
       String brief,
       String description,
       String image,
-      Radius raduis,
+      Radius radius,
       Detail detail,
       Alignment alignment) {
     if (verified) {
@@ -58,7 +58,7 @@ public class StoreModel extends BaseModel {
     this.brief = brief;
     this.description = description;
     this.image = image;
-    this.raduis = raduis;
+    this.radius = radius;
     this.detail = detail;
     this.alignment = alignment;
   }

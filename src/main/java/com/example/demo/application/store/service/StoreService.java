@@ -39,7 +39,7 @@ public class StoreService {
             .description(command.getDescription())
             .image(command.getImage())
             .verified(false)
-            .raduis(command.getRaduis())
+            .radius(command.getRadius())
             .detail(command.getDetail())
             .alignment(command.getAlignment())
             .userId(command.getUserId())

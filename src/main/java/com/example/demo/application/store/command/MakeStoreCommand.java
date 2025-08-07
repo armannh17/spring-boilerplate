@@ -16,7 +16,7 @@ public class MakeStoreCommand {
   private String description;
   private String image;
   private String color;
-  private Radius raduis;
+  private Radius radius;
   private Detail detail;
   private Alignment alignment;
   private UUID userId;

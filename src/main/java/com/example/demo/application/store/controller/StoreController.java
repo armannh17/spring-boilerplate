@@ -10,6 +10,7 @@ import com.example.demo.application.store.model.StoreModel;
 import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.application.store.serializer.StoreSerializer;
 import com.example.demo.application.store.service.StoreService;
+import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import com.example.demo.platform.shared.validator.SlugValidator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,22 +50,36 @@ public class StoreController {
   @Operation(summary = "Make a new store")
   ResponseDto<MakeStoreResDto> makeStore(
       @AuthenticationPrincipal UserDetails user, @Valid @RequestBody MakeStoreReqDto dto) {
-    MakeStoreCommand command = storeSerializer.serializeMakeStoreCommand(user, dto);
+    MakeStoreCommand command = storeSerializer.serializeToMakeStoreCommand(user, dto);
 
     String id = storeService.makeStore(command);
 
-    return storeSerializer.serializeMakeStoreResponse(id);
+    MakeStoreResDto response = storeSerializer.serializeToMakeStoreDto(id);
+
+    return ResponseDto.<MakeStoreResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.CREATED)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @ResponseStatus(HttpStatus.OK)
   @GetMapping(path = "/{slug}")
   @Operation(summary = "Get a store info")
   ResponseDto<GetStoreResDto> getStore(@Valid @PathVariable @SlugValidator String slug) {
-    GetStoreQuery query = storeSerializer.serializeGetStoreQuery(slug);
+    GetStoreQuery query = storeSerializer.serializeToGetStoreQuery(slug);
 
     StoreModel store = storeService.getStore(query);
 
-    return storeSerializer.serializeGetStoreResponse(store);
+    GetStoreResDto response = storeSerializer.serializeToGetStoreDto(store);
+
+    return ResponseDto.<GetStoreResDto>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .data(response)
+        .build();
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -76,10 +91,14 @@ public class StoreController {
       @AuthenticationPrincipal UserDetails user,
       @Valid @PathVariable @UUID String id,
       @Valid @RequestBody UpdateStoreReqDto dto) {
-    UpdateStoreCommand command = storeSerializer.serializeUpdateStoreCommand(user, id, dto);
+    UpdateStoreCommand command = storeSerializer.serializeToUpdateStoreCommand(user, id, dto);
 
     storeService.updateStore(command);
 
-    return storeSerializer.serializeUpdateStoreResponse();
+    return ResponseDto.<Void>builder()
+        .code(ErrorCode.NO_ERROR)
+        .status(HttpStatus.OK)
+        .message("successful")
+        .build();
   }
 }
