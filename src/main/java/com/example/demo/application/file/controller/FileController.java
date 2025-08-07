@@ -28,7 +28,7 @@ public class FileController {
     this.fileSerializer = fileSerializer;
   }
 
-  @PreAuthorize("hasRole('OWNER', 'ADMIN')")
+  @PreAuthorize("hasAnyRole('OWNER', 'ADMIN')")
   @PostMapping(path = "/generate-upload-link")
   @ResponseStatus(HttpStatus.OK)
   @SecurityRequirement(name = "Bearer Authentication")

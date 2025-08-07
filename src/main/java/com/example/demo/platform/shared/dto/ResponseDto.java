@@ -8,8 +8,20 @@ import org.springframework.http.HttpStatus;
 @Getter
 @Builder
 public class ResponseDto<T> {
-  private ErrorCode code;
-  private HttpStatus status;
+  private int code;
+  private int status;
   private String message;
   private T data;
+
+  public static class ResponseDtoBuilder<T> {
+    public ResponseDtoBuilder<T> code(ErrorCode code) {
+      this.code = code.getCode();
+      return this;
+    }
+
+    public ResponseDtoBuilder<T> status(HttpStatus status) {
+      this.status = status.value();
+      return this;
+    }
+  }
 }
