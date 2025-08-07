@@ -4,6 +4,7 @@ import com.example.demo.application.file.config.FileConfig;
 import java.time.Duration;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
@@ -21,7 +22,7 @@ public class AmazonClient implements StorageClient {
     String bucket = fileConfig.getBucketName();
     Duration expiry = fileConfig.getBucketExpiry();
 
-    PutObjectRequest command = PutObjectRequest.builder().bucket(bucket).key(key).build();
+    PutObjectRequest command = PutObjectRequest.builder().bucket(bucket).key(key).acl(ObjectCannedACL.PUBLIC_READ).build();
 
     PutObjectPresignRequest request =
         PutObjectPresignRequest.builder()
