@@ -1,9 +1,11 @@
 package com.example.demo.application.store.dto;
 
 import com.example.demo.platform.shared.dto.PaginationDto;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
+import lombok.Setter;
 
 @Getter
-@SuperBuilder
+@Setter
+@Builder
 public class GetStoreListReqDto extends PaginationDto {}

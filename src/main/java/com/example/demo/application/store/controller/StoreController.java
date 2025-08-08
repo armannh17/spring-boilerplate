@@ -95,7 +95,7 @@ public class StoreController {
 
   @PreAuthorize("hasRole('OWNER')")
   @ResponseStatus(HttpStatus.OK)
-  @GetMapping(path = "/")
+  @GetMapping(path = "")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Get store list")
   ResponseDto<List<GetStoreListResDto>> getStoreList(
