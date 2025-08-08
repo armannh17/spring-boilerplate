@@ -17,7 +17,6 @@ import com.example.demo.application.product.model.CategoryModel;
 import com.example.demo.application.product.query.GetCategoryQuery;
 import com.example.demo.application.product.serializer.CategorySerializer;
 import com.example.demo.application.product.service.CategoryService;
-import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -66,12 +65,7 @@ public class CategoryController {
 
     MakeCategoryResDto response = categorySerializer.serializeToMakeCategoryDto(id);
 
-    return ResponseDto.<MakeCategoryResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.CREATED, response);
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -88,11 +82,7 @@ public class CategoryController {
 
     categoryService.updateCategory(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -107,11 +97,7 @@ public class CategoryController {
 
     categoryService.deleteCategory(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 
   @ResponseStatus(HttpStatus.OK)
@@ -124,12 +110,7 @@ public class CategoryController {
 
     List<GetCategoryResDto> response = categorySerializer.serializeToGetCategoryDto(categories);
 
-    return ResponseDto.<List<GetCategoryResDto>>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.OK, response);
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -148,12 +129,7 @@ public class CategoryController {
 
     AddFieldResDto response = categorySerializer.serializeToAddFieldDto(id);
 
-    return ResponseDto.<AddFieldResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.CREATED, response);
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -172,11 +148,7 @@ public class CategoryController {
 
     categoryService.updateField(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -193,10 +165,6 @@ public class CategoryController {
 
     categoryService.deleteField(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 }

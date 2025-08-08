@@ -10,7 +10,6 @@ import com.example.demo.application.store.model.StoreModel;
 import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.application.store.serializer.StoreSerializer;
 import com.example.demo.application.store.service.StoreService;
-import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import com.example.demo.platform.shared.validator.SlugValidator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,12 +55,7 @@ public class StoreController {
 
     MakeStoreResDto response = storeSerializer.serializeToMakeStoreDto(id);
 
-    return ResponseDto.<MakeStoreResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.CREATED, response);
   }
 
   @ResponseStatus(HttpStatus.OK)
@@ -74,12 +68,7 @@ public class StoreController {
 
     GetStoreResDto response = storeSerializer.serializeToGetStoreDto(store);
 
-    return ResponseDto.<GetStoreResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.OK, response);
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -96,10 +85,6 @@ public class StoreController {
 
     storeService.updateStore(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 }

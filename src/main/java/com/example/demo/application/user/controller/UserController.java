@@ -7,7 +7,6 @@ import com.example.demo.application.user.dto.AuthenticateUserResDto;
 import com.example.demo.application.user.dto.LoginUserReqDto;
 import com.example.demo.application.user.serializer.UserSerializer;
 import com.example.demo.application.user.service.UserService;
-import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -41,11 +40,7 @@ public class UserController {
 
     userService.loginUser(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 
   @PostMapping(path = "/auth")
@@ -59,12 +54,7 @@ public class UserController {
 
     AuthenticateUserResDto response = userSerializer.serializeAuthenticateUserDto(token);
 
-    return ResponseDto.<AuthenticateUserResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.OK, response);
   }
 
   @PreAuthorize("isAuthenticated()")
@@ -73,10 +63,6 @@ public class UserController {
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Verify the users token")
   ResponseDto<Void> verifyAuthentication() {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 }

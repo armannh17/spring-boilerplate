@@ -13,15 +13,30 @@ public class ResponseDto<T> {
   private String message;
   private T data;
 
-  public static class ResponseDtoBuilder<T> {
-    public ResponseDtoBuilder<T> code(ErrorCode code) {
-      this.code = code.getCode();
-      return this;
-    }
+  public static <T> ResponseDto<T> success(HttpStatus status) {
+    return ResponseDto.<T>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(status.value())
+        .message("successful")
+        .data(null)
+        .build();
+  }
 
-    public ResponseDtoBuilder<T> status(HttpStatus status) {
-      this.status = status.value();
-      return this;
-    }
+  public static <T> ResponseDto<T> success(HttpStatus status, T data) {
+    return ResponseDto.<T>builder()
+        .code(ErrorCode.NO_ERROR.getCode())
+        .status(status.value())
+        .message("successful")
+        .data(data)
+        .build();
+  }
+
+  public static ResponseDto<Void> error(ErrorCode code, HttpStatus status, String message) {
+    return ResponseDto.<Void>builder()
+        .code(code.getCode())
+        .status(status.value())
+        .message(message)
+        .data(null)
+        .build();
   }
 }

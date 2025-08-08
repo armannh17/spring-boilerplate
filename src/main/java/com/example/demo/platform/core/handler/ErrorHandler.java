@@ -27,153 +27,97 @@ public class ErrorHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseDto<Void> handleValidationErrors(MethodArgumentNotValidException ex) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.INVALID_INPUT)
-        .status(HttpStatus.BAD_REQUEST)
-        .message("some fields are missing or invalid")
-        .build();
+    return ResponseDto.error(
+        ErrorCode.INVALID_INPUT, HttpStatus.BAD_REQUEST, "some fields are missing or invalid");
   }
 
-  @ExceptionHandler(exception = InvalidCredentialException.class)
+  @ExceptionHandler(InvalidCredentialException.class)
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   public ResponseDto<Void> handleInvalidCredentialError(Exception e) {
-
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.UNAUTHORIZED)
-        .status(HttpStatus.UNAUTHORIZED)
-        .message("invalid credential")
-        .build();
+    return ResponseDto.error(ErrorCode.UNAUTHORIZED, HttpStatus.UNAUTHORIZED, "invalid credential");
   }
 
   @ExceptionHandler(AuthorizationDeniedException.class)
   @ResponseStatus(HttpStatus.FORBIDDEN)
   public ResponseDto<Void> handleAuthorizationFailedError(Exception e) {
-
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.FORBIDDEN)
-        .status(HttpStatus.FORBIDDEN)
-        .message("access denied")
-        .build();
+    return ResponseDto.error(ErrorCode.FORBIDDEN, HttpStatus.FORBIDDEN, "access denied");
   }
 
   @ExceptionHandler(StoreAlreadyExistsException.class)
   @ResponseStatus(HttpStatus.CONFLICT)
   public ResponseDto<Void> handleStoreAlreadyExistsError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.SLUG_TAKEN)
-        .status(HttpStatus.CONFLICT)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(ErrorCode.SLUG_TAKEN, HttpStatus.CONFLICT, e.getMessage());
   }
 
   @ExceptionHandler(GreyScaleColorAreNotAllowedException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ResponseDto<Void> handleGreyScaleColorAreNotAllowedError(Exception e) {
-
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.GREY_SCALE_COLORS_NOT_ALLOWED)
-        .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(
+        ErrorCode.GREY_SCALE_COLORS_NOT_ALLOWED, HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
   }
 
   @ExceptionHandler(StoreNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseDto<Void> handleStoreNotFoundError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.STORE_NOT_FOUND)
-        .status(HttpStatus.NOT_FOUND)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(ErrorCode.STORE_NOT_FOUND, HttpStatus.NOT_FOUND, e.getMessage());
   }
 
   @ExceptionHandler(AccessToStoreDeniedException.class)
   @ResponseStatus(HttpStatus.FORBIDDEN)
   public ResponseDto<Void> handleAccessToStoreDeniedError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.ACCESS_TO_STORE_DENIED)
-        .status(HttpStatus.FORBIDDEN)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(
+        ErrorCode.ACCESS_TO_STORE_DENIED, HttpStatus.FORBIDDEN, e.getMessage());
   }
 
   @ExceptionHandler(CantUpdateVerifiedStoreException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ResponseDto<Void> handleCantUpdateVerifiedStoreError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.CANT_UPDATE_VERIFIED_STORE)
-        .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(
+        ErrorCode.CANT_UPDATE_VERIFIED_STORE, HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
   }
 
   @ExceptionHandler(OtpIsNotExpiredException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ResponseDto<Void> handleOtpIsNotExpiredError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.OTP_IS_NOT_EXPIRED)
-        .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(
+        ErrorCode.OTP_IS_NOT_EXPIRED, HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
   }
 
   @ExceptionHandler(CategoryNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseDto<Void> handleCategoryNotFoundError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.CATEGORY_NOT_FOUND)
-        .status(HttpStatus.NOT_FOUND)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(ErrorCode.CATEGORY_NOT_FOUND, HttpStatus.NOT_FOUND, e.getMessage());
   }
 
   @ExceptionHandler(FieldNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseDto<Void> handleFieldNotFoundError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.FIELD_NOT_FOUND)
-        .status(HttpStatus.NOT_FOUND)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(ErrorCode.FIELD_NOT_FOUND, HttpStatus.NOT_FOUND, e.getMessage());
   }
 
   @ExceptionHandler(CantDeleteCategoryException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ResponseDto<Void> handleCantDeleteCategoryError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.CANT_DELETE_CATEGORY)
-        .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(
+        ErrorCode.CANT_DELETE_CATEGORY, HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
   }
 
   @ExceptionHandler(ProductNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseDto<Void> handleProductNotFoundError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.PRODUCT_NOT_FOUND)
-        .status(HttpStatus.NOT_FOUND)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(ErrorCode.PRODUCT_NOT_FOUND, HttpStatus.NOT_FOUND, e.getMessage());
   }
 
   @ExceptionHandler(CantUpdateProductException.class)
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ResponseDto<Void> handleCantUpdateProductError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.CANT_UPDATE_PRODUCT)
-        .status(HttpStatus.UNPROCESSABLE_ENTITY)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(
+        ErrorCode.CANT_UPDATE_PRODUCT, HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
   }
 
   @ExceptionHandler(VariantNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseDto<Void> handleVariantNotFoundError(Exception e) {
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.VARIANT_NOT_FOUND)
-        .status(HttpStatus.NOT_FOUND)
-        .message(e.getMessage())
-        .build();
+    return ResponseDto.error(ErrorCode.VARIANT_NOT_FOUND, HttpStatus.NOT_FOUND, e.getMessage());
   }
 }

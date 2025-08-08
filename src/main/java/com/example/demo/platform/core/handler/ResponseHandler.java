@@ -21,8 +21,7 @@ public class ResponseHandler {
     HttpStatus status = HttpStatus.BAD_REQUEST;
     String message = "some fields are missing or invalid";
 
-    return ResponseEntity.status(status)
-        .body(ResponseDto.<Void>builder().code(code).status(status).message(message).build());
+    return ResponseEntity.status(status).body(ResponseDto.error(code, status, message));
   }
 
   public void handleUnauthorizedResponse(HttpServletResponse response)
@@ -33,9 +32,7 @@ public class ResponseHandler {
 
     response.setStatus(status.value());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-    mapper.writeValue(
-        response.getWriter(),
-        ResponseDto.<Void>builder().code(code).status(status).message(message).build());
+    mapper.writeValue(response.getWriter(), ResponseDto.error(code, status, message));
   }
 
   public ResponseEntity<ResponseDto<Void>> handleNotFoundResponse() {
@@ -43,8 +40,7 @@ public class ResponseHandler {
     HttpStatus status = HttpStatus.NOT_FOUND;
     String message = "uri or asset not found";
 
-    return ResponseEntity.status(status)
-        .body(ResponseDto.<Void>builder().code(code).status(status).message(message).build());
+    return ResponseEntity.status(status).body(ResponseDto.error(code, status, message));
   }
 
   public ResponseEntity<ResponseDto<Void>> handleMethodNotAllowedResponse() {
@@ -52,8 +48,7 @@ public class ResponseHandler {
     HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
     String message = "method not allowed";
 
-    return ResponseEntity.status(status)
-        .body(ResponseDto.<Void>builder().code(code).status(status).message(message).build());
+    return ResponseEntity.status(status).body(ResponseDto.error(code, status, message));
   }
 
   public ResponseEntity<ResponseDto<Void>> handleContentNotSupportedResponse() {
@@ -61,8 +56,7 @@ public class ResponseHandler {
     HttpStatus status = HttpStatus.UNSUPPORTED_MEDIA_TYPE;
     String message = "content not supported";
 
-    return ResponseEntity.status(status)
-        .body(ResponseDto.<Void>builder().code(code).status(status).message(message).build());
+    return ResponseEntity.status(status).body(ResponseDto.error(code, status, message));
   }
 
   public ResponseEntity<ResponseDto<Void>> handleUnknownResponse() {
@@ -70,7 +64,6 @@ public class ResponseHandler {
     HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
     String message = "internal server error";
 
-    return ResponseEntity.status(status)
-        .body(ResponseDto.<Void>builder().code(code).status(status).message(message).build());
+    return ResponseEntity.status(status).body(ResponseDto.error(code, status, message));
   }
 }

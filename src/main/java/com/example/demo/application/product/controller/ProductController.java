@@ -12,7 +12,6 @@ import com.example.demo.application.product.dto.MakeProductResDto;
 import com.example.demo.application.product.dto.UpdateProductReqDto;
 import com.example.demo.application.product.serializer.ProductSerializer;
 import com.example.demo.application.product.service.ProductService;
-import com.example.demo.platform.shared.constant.ErrorCode;
 import com.example.demo.platform.shared.dto.ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -58,20 +57,15 @@ public class ProductController {
 
     MakeProductResDto response = productSerializer.serializeToMakeProductDto(id);
 
-    return ResponseDto.<MakeProductResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.CREATED, response);
   }
 
   @PreAuthorize("hasRole('OWNER')")
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(HttpStatus.OK)
   @PutMapping(path = "/{productId}")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Update a product")
-  ResponseDto<Void> makeProduct(
+  ResponseDto<Void> updateProduct(
       @AuthenticationPrincipal UserDetails user,
       @Valid @PathVariable @UUID String productId,
       @Valid @RequestBody UpdateProductReqDto dto) {
@@ -80,15 +74,11 @@ public class ProductController {
 
     productService.updateProduct(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 
   @PreAuthorize("hasRole('OWNER')")
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(HttpStatus.OK)
   @DeleteMapping(path = "/{productId}")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Delete a product")
@@ -99,11 +89,7 @@ public class ProductController {
 
     productService.deleteProduct(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 
   @PreAuthorize("hasRole('OWNER')")
@@ -122,16 +108,11 @@ public class ProductController {
 
     AddVariantResDto response = productSerializer.serializeToAddVariantDto(id);
 
-    return ResponseDto.<AddVariantResDto>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.CREATED)
-        .message("successful")
-        .data(response)
-        .build();
+    return ResponseDto.success(HttpStatus.CREATED, response);
   }
 
   @PreAuthorize("hasRole('OWNER')")
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(HttpStatus.OK)
   @DeleteMapping(path = "/{productId}/variant/{variantId}")
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Delete a variant")
@@ -144,10 +125,6 @@ public class ProductController {
 
     productService.deleleVariant(command);
 
-    return ResponseDto.<Void>builder()
-        .code(ErrorCode.NO_ERROR)
-        .status(HttpStatus.OK)
-        .message("successful")
-        .build();
+    return ResponseDto.success(HttpStatus.OK);
   }
 }
