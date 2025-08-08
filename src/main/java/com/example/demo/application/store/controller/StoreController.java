@@ -2,11 +2,14 @@ package com.example.demo.application.store.controller;
 
 import com.example.demo.application.store.command.MakeStoreCommand;
 import com.example.demo.application.store.command.UpdateStoreCommand;
+import com.example.demo.application.store.dto.GetStoreListReqDto;
+import com.example.demo.application.store.dto.GetStoreListResDto;
 import com.example.demo.application.store.dto.GetStoreResDto;
 import com.example.demo.application.store.dto.MakeStoreReqDto;
 import com.example.demo.application.store.dto.MakeStoreResDto;
 import com.example.demo.application.store.dto.UpdateStoreReqDto;
 import com.example.demo.application.store.model.StoreModel;
+import com.example.demo.application.store.query.GetStoreListQuery;
 import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.application.store.serializer.StoreSerializer;
 import com.example.demo.application.store.service.StoreService;
@@ -16,6 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -86,5 +90,21 @@ public class StoreController {
     storeService.updateStore(command);
 
     return ResponseDto.success(HttpStatus.OK);
+  }
+
+  @PreAuthorize("hasRole('OWNER')")
+  @ResponseStatus(HttpStatus.OK)
+  @GetMapping(path = "/")
+  @SecurityRequirement(name = "Bearer Authentication")
+  @Operation(summary = "Get store list")
+  ResponseDto<List<GetStoreListResDto>> getStoreList(
+      @AuthenticationPrincipal UserDetails user, @Valid @RequestBody GetStoreListReqDto dto) {
+    GetStoreListQuery query = storeSerializer.serializeToGetStoreListQuery(user.getUsername(), dto);
+
+    List<StoreModel> stores = storeService.getStoreList(query);
+
+    List<GetStoreListResDto> response = storeSerializer.serializeToGetStoreListDto(stores);
+
+    return ResponseDto.success(HttpStatus.OK, response);
   }
 }

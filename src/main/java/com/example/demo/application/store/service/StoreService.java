@@ -6,9 +6,11 @@ import com.example.demo.application.store.exception.AccessToStoreDeniedException
 import com.example.demo.application.store.exception.StoreAlreadyExistsException;
 import com.example.demo.application.store.exception.StoreNotFoundException;
 import com.example.demo.application.store.model.StoreModel;
+import com.example.demo.application.store.query.GetStoreListQuery;
 import com.example.demo.application.store.query.GetStoreQuery;
 import com.example.demo.application.store.repository.StoreRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +85,10 @@ public class StoreService {
 
     // save the updated store
     storeRepository.save(store);
+  }
+
+  public List<StoreModel> getStoreList(GetStoreListQuery query) {
+    return storeRepository.findListByUser(query.getPage(), query.getLimit(), query.getUserId());
   }
 
   public StoreModel checkStore(UUID id, UUID userId) {
