@@ -26,6 +26,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -98,7 +99,7 @@ public class StoreController {
   @SecurityRequirement(name = "Bearer Authentication")
   @Operation(summary = "Get store list")
   ResponseDto<List<GetStoreListResDto>> getStoreList(
-      @AuthenticationPrincipal UserDetails user, @Valid @RequestBody GetStoreListReqDto dto) {
+      @AuthenticationPrincipal UserDetails user, @Valid @ModelAttribute GetStoreListReqDto dto) {
     GetStoreListQuery query = storeSerializer.serializeToGetStoreListQuery(user.getUsername(), dto);
 
     List<StoreModel> stores = storeService.getStoreList(query);
