@@ -6,7 +6,7 @@
 	<logger name="org.hibernate" level="INFO"/>
 	<logger name="com.example" level="DEBUG"/>
 
-	<appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 			<providers>
 				<timestamp/>
@@ -20,20 +20,24 @@
 		</encoder>
 	</appender>
 
-	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="TEXT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
+			<pattern>[%X{traceId:-},%X{spanId:-}] %d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
 		</encoder>
 	</appender>
 
+	<appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+  	</appender>
+
 	<springProfile name="prod">
 		<root level="INFO">
-			<appender-ref ref="JSON_CONSOLE"/>
+			<appender-ref ref="JSON"/>
 		</root>
 	</springProfile>
 	<springProfile name="!prod">
 		<root level="INFO">
-			<appender-ref ref="STDOUT"/>
+			<appender-ref ref="OTEL"/>
+			<appender-ref ref="TEXT"/>
 		</root>
 	</springProfile>
 </configuration>
