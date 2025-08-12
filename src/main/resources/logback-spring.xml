@@ -26,9 +26,6 @@
 		</encoder>
 	</appender>
 
-	<appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
-  	</appender>
-
 	<springProfile name="prod">
 		<root level="INFO">
 			<appender-ref ref="JSON"/>
@@ -36,7 +33,6 @@
 	</springProfile>
 	<springProfile name="!prod">
 		<root level="INFO">
-			<appender-ref ref="OTEL"/>
 			<appender-ref ref="TEXT"/>
 		</root>
 	</springProfile>
