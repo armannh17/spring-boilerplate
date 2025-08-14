@@ -1,4 +1,4 @@
-# store-builder
+# Spring Boilerplate
 ### Format
 ```
 java -jar formatter.jar -i src/main/java/com/example/demo/**/*.java
